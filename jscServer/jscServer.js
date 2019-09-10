@@ -52,6 +52,16 @@ io.on('connection', (socket) => {
     })
 
 
+
+
+    socket.on('getLiveUsers', () => {
+  
+        socket.emit('getLiveUsersACK', TokenMaster );
+        socket.broadcast.emit('getLiveUsersACK', TokenMaster );
+
+    })
+
+
 })
 
 

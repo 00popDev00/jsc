@@ -19,6 +19,16 @@ module.exports = {
       type: "signout",
       credential
     }
-  }
+  },
+
+  _getLiveUsers: () => {
+    return {
+      type: "getLiveUsers",
+    }
+  },
+
+
 
 }
+
+

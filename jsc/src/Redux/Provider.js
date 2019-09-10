@@ -1,11 +1,12 @@
 import ClientSocket from 'socket.io-client';
 var socket = ClientSocket("http://localhost:3000/");
-var status,Token;
+var status, Token;
 var prestate = {
     username: undefined,
     oMDlists: [],
     status: undefined,
     token: undefined,
+    onlineUser: [],
 }
 
 export default (state = prestate, action) => {
@@ -17,11 +18,35 @@ export default (state = prestate, action) => {
 
         case 'signout': return signout(state, action.credential);
 
+        case 'getLiveUsers': return getLiveUsers(state);
+
+
+
 
         default: return state;
     }
 }
 
+
+
+const getLiveUsers = (state) => {
+    var global;
+    //  console.log('\nStore \n',state,data);
+    socket.emit('getLiveUsers');
+    //console.log(data);
+    socket.on('getLiveUsersACK', (data) => {
+        // console.log('online user are:\n' ,global )
+
+
+        Token = data;
+        state={ ...state, onlineUser: Token }
+        console.log('online user are:\n', Token)
+
+    })
+
+    console.log('store \n',state,'\n')
+    return state;
+}
 
 
 const signup = (state, data) => {
@@ -60,7 +85,7 @@ const signin = (state, data) => {
 
     })
 
-    if (status === 'in') return { ...state, username: data.u ,token:Token };
+    if (status === 'in') return { ...state, username: data.u, token: Token };
     else return { ...state };
 
 }
