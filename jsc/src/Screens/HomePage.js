@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+
 import { connect } from "react-redux";
 import LiveUser from '../Components/liveUser'
 import Action from "../Redux/action";
+import React, { Component } from 'react';
 
 class HomePage extends Component {
     state = {}

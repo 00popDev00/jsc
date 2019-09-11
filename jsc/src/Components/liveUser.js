@@ -12,6 +12,7 @@ class LiveUser extends Component {
     //     //     this.setState({onlineUser: this.props.onlineUser})
     //     // }
     // }
+
     componentDidMount() {
 
         this.props.getLiveUsers()
@@ -23,9 +24,9 @@ class LiveUser extends Component {
         // }
          console.log('online users componen are: ', this.props.onlineUser)
 
-        // if(this.props.onlineUser !== this.state.onlineUser){clearInterval(x)}
 
     }
+    
     render() {
         //     console.log('online users componen are: ' , this.state.onlineUser)
 
