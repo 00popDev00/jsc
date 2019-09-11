@@ -1,6 +1,6 @@
 import ClientSocket from 'socket.io-client';
-var socket = ClientSocket("http://localhost:3000/");
-var status, Token;
+var socket; //= ClientSocket("http://localhost:3000/");
+var newState, Token;
 var prestate = {
     username: undefined,
     oMDlists: [],
@@ -19,6 +19,11 @@ export default (state = prestate, action) => {
         case 'signout': return signout(state, action.credential);
 
         case 'getLiveUsers': return getLiveUsers(state);
+
+        case 'listentoSignout': return listentoSignout();
+
+
+
 
 
 
@@ -39,24 +44,35 @@ const getLiveUsers = (state) => {
 
 
         Token = data;
-        state={ ...state, onlineUser: Token }
+        state = { ...state, onlineUser: Token }
         console.log('online user are:\n', Token)
 
     })
 
-    console.log('store \n',state,'\n')
+    //console.log('store \n', state, '\n')
     return state;
 }
 
 
 const signup = (state, data) => {
 
-    //  console.log('\nStore \n',state,data);
-    socket.emit('Signup', { name: data.u, password: data.p });
-    //console.log(data);
-    socket.on('SignupACK', () => {
-        console.log('Succesfullt singed up!')
+
+    fetch('http://localhost:5000/signup/', {
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
+        method: 'post',
+        body: JSON.stringify({
+            'userid': data.u,
+            'password': data.p,
+        }),
     })
+        .then(e => { return e.json() })
+        .then(data => {
+            console.log('datais:', data)
+        })
+        .catch(error => console.error(error))
 
     return state;
 }
@@ -64,51 +80,61 @@ const signup = (state, data) => {
 const signin = (state, data) => {
     //  console.log('\nStore \n',state,data);
 
-    socket.emit('Signin', { name: data.u, password: data.p });
 
-    socket.on('SigninACK', (faith) => {
-        if (faith.faith !== -1) {
+    socket = ClientSocket("http://localhost:1001/");
 
-
-
-
-            status = "in";
-            Token = faith.Token
-
-
-        }
-        else {
-            alert('log in again!')
-            state.status = "out";
-        }
-
-
+    fetch('http://localhost:5000/login/', {
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
+        method: 'post',
+        body: JSON.stringify({
+            'userid': data.u,
+            'password': data.p,
+        }),
     })
+        .then(e => { return e.json() })
+        .then(result => {
+           // console.log('datais:', result);
+            newState = { ...state, username: data.u, token: result.Token }
+        })
+        .catch(error => console.error(error))
 
-    if (status === 'in') return { ...state, username: data.u, token: Token };
-    else return { ...state };
+    //console.log(newState)
+    return newState;
 
 }
 
 
 const signout = (state, data) => {
-    console.log(data)
 
-    socket.emit('Signout', data)
-    state.status = "";
-    state.username = "";
-    console.log(state)
-
-    return state;
+    fetch('http://localhost:5000/signout/', {
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
+        method: 'post',
+        body: JSON.stringify({
+            'userid': data,
+        }),
+    })
+        .then(e => { return e.json() })
+        .then(data => {
+            console.log('status:', data);
+        })
+        .catch(error => console.error(error))
 }
 
-//   _signout: () => {
-//     socket.emit('Signout', this.state.username)
+const listentoSignout = () => {
 
-//     this.props.oMDlists([1, 2, 3])
+    // socket.on('SignoutACK',(data)=>{
 
-//     console.log('from stor', this.props.oMDlists)
-// },
+
+    // })
+
+    // return 
+}
 
 
 

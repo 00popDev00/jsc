@@ -22,6 +22,7 @@ class LiveUser extends Component {
         //     this.props.getLiveUsers()
 
         // }
+      //  this.props.listentoSignout();
          console.log('online users componen are: ', this.props.onlineUser)
 
 
@@ -44,7 +45,10 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
 
-    getLiveUsers: () => dispatch(Action._getLiveUsers())
+    getLiveUsers: () => dispatch(Action._getLiveUsers()),
+    listentoSignout: () => dispatch(Action._listentoSignout())
+
+    
 
 
 });

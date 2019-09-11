@@ -1,4 +1,10 @@
-var app = require('express')();
+var express = require('express')
+var app = express();
+var cors = require('cors')
+app.use(cors())
+app.use(express.json())
+//app.use(express.bodyParser());
+//app.use(require('connect').bodyParser());
 
 
 var TokenMaster = [];  //|| List of online Users
@@ -6,17 +12,30 @@ var MasterDatabase = [];
 var UCD = [];//UsersCredentialDatabse
 
 
-app.get('/signup/:userid-:password',(req,res)=>{
-
-     _signup(req.param);
-        //socket.emit('SignupACK');
-
-res.send('hi!')
+app.post('/signup/', (req, res) => {
+    _signup(req.body);
+    res.send({ message: 'Successfully Signedup!' })
 
 })
 
-_signup = (data) => {
+app.post('/login', (req, res) => {
 
+
+    let faith = _signin(req.body);
+    if (faith !== -1) {
+
+        _tokenManager(data.name, socket);
+        _broadcastOnlineUser(socket);
+    }
+
+    res.send({ faith: faith, Token: TokenMaster[faith] })
+    // socket.emit('SigninACK', {faith:faith,Token:TokenMaster[faith]});
+
+})
+
+
+
+_signup = (data) => {
 
 
     let newUser = {
@@ -49,6 +68,7 @@ _tokenManager = (data, socket) => {
         }
 
         TokenMaster.push(newToken);
+        
         socket.emit('myToken', newToken);
         // console.log('\nToken Master:\n', TokenMaster, '\n')
     }
@@ -56,8 +76,8 @@ _tokenManager = (data, socket) => {
 
 _broadcastOnlineUser = (data) => {
 
-    data.broadcast.emit('OnlineUseremit', TokenMaster);
-    data.emit('OnlineUser', TokenMaster);
+   // data.broadcast.emit('OnlineUseremit', TokenMaster);
+   // data.emit('OnlineUser', TokenMaster);
     console.log('\nLive User :\n', TokenMaster, '\n')
 
 

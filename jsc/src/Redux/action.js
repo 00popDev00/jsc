@@ -26,7 +26,12 @@ module.exports = {
       type: "getLiveUsers",
     }
   },
-
+  
+  _listentoSignout: () => {
+    return {
+      type: "listentoSignout",
+    }
+  },
 
 
 }

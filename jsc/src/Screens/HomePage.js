@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 class HomePage extends Component {
     state = {}
     render() {
-      //  console.log('username Homepage=>', this.props)
+  //      console.log('username Homepage=>', this.props.username)
 
         return (
             <div>
