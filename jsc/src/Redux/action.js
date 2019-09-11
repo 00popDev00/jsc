@@ -27,11 +27,7 @@ module.exports = {
     }
   },
   
-  _listentoSignout: () => {
-    return {
-      type: "listentoSignout",
-    }
-  },
+
 
 
 }

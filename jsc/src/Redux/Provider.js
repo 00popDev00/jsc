@@ -1,5 +1,3 @@
-import ClientSocket from 'socket.io-client';
-var socket; //= ClientSocket("http://localhost:3000/");
 var newState, Token;
 var prestate = {
     username: undefined,
@@ -18,13 +16,8 @@ export default (state = prestate, action) => {
 
         case 'signout': return signout(state, action.credential);
 
-        case 'getLiveUsers': return getLiveUsers(state);
 
         case 'listentoSignout': return listentoSignout();
-
-
-
-
 
 
 
@@ -32,26 +25,6 @@ export default (state = prestate, action) => {
     }
 }
 
-
-
-const getLiveUsers = (state) => {
-    var global;
-    //  console.log('\nStore \n',state,data);
-    socket.emit('getLiveUsers');
-    //console.log(data);
-    socket.on('getLiveUsersACK', (data) => {
-        // console.log('online user are:\n' ,global )
-
-
-        Token = data;
-        state = { ...state, onlineUser: Token }
-        console.log('online user are:\n', Token)
-
-    })
-
-    //console.log('store \n', state, '\n')
-    return state;
-}
 
 
 const signup = (state, data) => {
@@ -63,6 +36,7 @@ const signup = (state, data) => {
             'Content-Type': 'application/json'
         },
         method: 'post',
+        
         body: JSON.stringify({
             'userid': data.u,
             'password': data.p,
@@ -81,7 +55,6 @@ const signin = (state, data) => {
     //  console.log('\nStore \n',state,data);
 
 
-    socket = ClientSocket("http://localhost:1001/");
 
     fetch('http://localhost:5000/login/', {
         headers: {
@@ -96,13 +69,12 @@ const signin = (state, data) => {
     })
         .then(e => { return e.json() })
         .then(result => {
-           // console.log('datais:', result);
-            newState = { ...state, username: data.u, token: result.Token }
+            // console.log('datais:', result);
+            return    { ...state, username: data.u, token: result.Token }
         })
         .catch(error => console.error(error))
 
     //console.log(newState)
-    return newState;
 
 }
 

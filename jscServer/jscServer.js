@@ -65,6 +65,9 @@ app.post('/signout', (req, res) => {
 
 
     }
+
+    globalSocket.emit('getLiveUsersACK', TokenMaster);
+    globalSocket.broadcast.emit('getLiveUsersACK', TokenMaster);
     // socket.emit('SignoutACK', faith);
 
 })

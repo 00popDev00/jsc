@@ -37,7 +37,7 @@ class App extends Component {
 
             let x = setInterval(() => {
               this.props.signin({ u: username, p: password })
-           //   console.log('app=> ', this.props.username)
+              console.log('app=> ', this.props.username)
 
               if (this.props.username !== undefined) {
                 clearInterval(x);
