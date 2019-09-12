@@ -1,15 +1,15 @@
 
 module.exports = {
-  _signup: (credential) => {
+  Username: (credential) => {
     return {
-      type: "signup",
+      type: "Username",
       credential
     }
   },
 
-  _signin: (credential) => {
+  Onlineusers: (credential) => {
     return {
-      type: "signin",
+      type: "Onlineusers",
       credential
     }
   },

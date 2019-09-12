@@ -24,9 +24,8 @@ class LiveUser extends Component {
 
             console.log('index :\n',this.props.owne)
 
-            this.setState({ onlineUser: data });
-
-
+           // this.setState({ onlineUser: data });
+            this.props.Onlineusers(data);
             console.log('state in cokete:\n', data)
 
         })
@@ -38,8 +37,8 @@ class LiveUser extends Component {
             <div>
 
                 <u>
-                    {this.state.onlineUser.map((e, index) => (
-                        e.owner !== this.props.owner ?
+                    {this.props.onlineUser.map((e, index) => (
+                        e.owner !== this.props.username ?
                             <li
                                 key={index}>
                                 {e.owner}
@@ -59,7 +58,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
 
-    //listentoSignout: () => dispatch(Action._listentoSignout())
+    Onlineusers: (credential) => dispatch(Action.Onlineusers(credential))
 
 
 
