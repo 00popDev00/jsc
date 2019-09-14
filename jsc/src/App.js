@@ -47,9 +47,13 @@ class App extends Component {
     })
       .then(e => { return e.json() })
       .then(result => {
-         console.log('datais:', result);
-         this.props.Username(this.state.username)
-       // return { ...state, username: data.u, token: result.Token }
+        console.log('datais:', result);
+        this.props.Username(this.state.username)
+        this.props.Token(result.Token.usid)
+        localStorage.setItem('Token', result.Token.usid)
+        localStorage.setItem('User', result.Token.owner)
+
+        // return { ...state, username: data.u, token: result.Token }
       })
       .catch(error => console.error(error))
   }
@@ -78,9 +82,9 @@ class App extends Component {
 
             let x = setInterval(() => {
               this._signin();
-             // clearInterval(x);
+              // clearInterval(x);
 
-             // console.log('app=> ', this.props.username)
+              // console.log('app=> ', this.props.username)
 
               if (this.props.username !== undefined) {
                 clearInterval(x);
@@ -105,8 +109,8 @@ const mapStateToProps = state => ({
   ...state
 });
 const mapDispatchToProps = dispatch => ({
-   Username: (credential) => dispatch(Action.Username(credential)),
-  // signin: (credential) => dispatch(Action._signin(credential)),
+  Username: (credential) => dispatch(Action.Username(credential)),
+  Token: (credential) => dispatch(Action.Token(credential)),
   // signout: (credential) => dispatch(Action._signout(credential))
 
 

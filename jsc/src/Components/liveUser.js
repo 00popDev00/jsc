@@ -19,27 +19,32 @@ class LiveUser extends Component {
     componentDidMount() {
 
         socket.emit('getLiveUsers');
-        
+
         socket.on('getLiveUsersACK', (data) => {
 
-            console.log('index :\n',this.props.owne)
+            console.log('index :\n', this.props.owne)
 
-           // this.setState({ onlineUser: data });
+            // this.setState({ onlineUser: data });
             this.props.Onlineusers(data);
             console.log('state in cokete:\n', data)
 
         })
     }
 
+    _selectUser = (data) => {
+        this.props.CurrentReciver(data.owner);
+    }
+
     render() {
 
         return (
-            <div>
+            <div >
 
                 <u>
                     {this.props.onlineUser.map((e, index) => (
                         e.owner !== this.props.username ?
                             <li
+                                onClick={() => this._selectUser(e)}
                                 key={index}>
                                 {e.owner}
                             </li>
@@ -58,7 +63,9 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
 
-    Onlineusers: (credential) => dispatch(Action.Onlineusers(credential))
+    Onlineusers: (credential) => dispatch(Action.Onlineusers(credential)),
+    CurrentReciver: (credential) => dispatch(Action.CurrentReciver(credential))
+
 
 
 

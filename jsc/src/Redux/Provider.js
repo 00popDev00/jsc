@@ -5,6 +5,7 @@ var prestate = {
     status: undefined,
     token: undefined,
     onlineUser: [],
+    currentreciver:[],
 }
 
 export default (state = prestate, action) => {
@@ -12,12 +13,13 @@ export default (state = prestate, action) => {
 
         case 'Username': return {...state,username:action.credential};
 
+        case 'Token': return {...state,token:action.credential};
 
         case 'Onlineusers': return {...state,onlineUser:action.credential};
 
+        case 'currentreciver': return {...state,currentreciver:action.credential};
 
-        case 'listentoSignout': return listentoSignout();
-
+       // case 'listentoSignout': return listentoSignout();
 
 
         default: return state;

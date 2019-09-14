@@ -1,6 +1,7 @@
 
 import { connect } from "react-redux";
 import LiveUser from '../Components/liveUser'
+import Chat from '../Components/chat'
 import Action from "../Redux/action";
 import React, { Component } from 'react';
 
@@ -21,11 +22,29 @@ class HomePage extends Component {
             .then(e => { return e.json() })
             .then(data => {
                 console.log('status:', data);
+                localStorage.clear();
+
             })
             .catch(error => console.error(error))
     }
+
     componentDidMount() {
-if(this.props.username === undefined) this.props.history.push('/')
+        if (this.props.username === undefined) {
+            if (localStorage.getItem('Token') === null) {
+                this.props.history.push('/')
+
+            }
+            else {
+
+
+                this.props.Username(localStorage.getItem('User'))
+                this.props.Token(localStorage.getItem('Token'))
+
+
+            }
+
+
+        }
 
     }
     render() {
@@ -35,7 +54,7 @@ if(this.props.username === undefined) this.props.history.push('/')
             <div>
                 <h4>homePage</h4>
                 <button onClick={() => {
-                
+
                     // this.props.signout();
                     this._signout()
                     this.props.history.push('/')
@@ -49,7 +68,8 @@ if(this.props.username === undefined) this.props.history.push('/')
                     </div>
                     <div style={{ flex: 1 }}>
                         chat module
-                </div>
+                        <Chat />
+                    </div>
                 </div>
 
             </div>
@@ -61,9 +81,9 @@ const mapStateToProps = state => ({
     ...state
 });
 const mapDispatchToProps = dispatch => ({
-    // signup: (credential) => dispatch(Action._signup(credential)),
-    //  signin: (credential) => dispatch(Action._signin(credential)),
-    // signout: (credential) => dispatch(Action._signout(credential))
+    Username: (credential) => dispatch(Action.Username(credential)),
+    Token: (credential) => dispatch(Action.Token(credential)),
+
 
 
 });

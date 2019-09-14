@@ -14,18 +14,32 @@ module.exports = {
     }
   },
 
-  _signout: (credential) => {
+  Token: (credential) => {
     return {
-      type: "signout",
+      type: "Token",
       credential
     }
   },
+  // _signout: (credential) => {
+  //   return {
+  //     type: "signout",
+  //     credential
+  //   }
+  // },
 
-  _getLiveUsers: () => {
+  // _getLiveUsers: () => {
+  //   return {
+  //     type: "getLiveUsers",
+  //   }
+  // },
+  //||\\
+  CurrentReciver: (credential) => {
     return {
-      type: "getLiveUsers",
+      type: "currentreciver",
+      credential
     }
   },
+  
   
 
 
