@@ -1,9 +1,2 @@
-# Todo
-|Index |todo     |  Description   |
-|------|---------|----------------|
-| 1 | for single login multiple signout | uncomment section in `componentdidmount()` in [Homepage.js](link)|
-
-# Future Todo
-|Index |todo     |  Description   |
-|------|---------|----------------|
-| 1 | for single login multiple signout | uncomment section in `componentdidmount()` in [Homepage.js](link)|
+# Chat App
+It is a javascript chat application build under reactJS and node.
