@@ -15,18 +15,21 @@ class Chat extends Component {
     //     //     this.setState({onlineUser: this.props.onlineUser})
     //     // }
     // }
-
+    _send = () => {
+        socket.emit('messageSent',this.props.token);
+socket.on('message',(data)=>console.log('Message:==> ', data))
+    }
 
     render() {
 
         return (
             <div >
 
-                <div><h5>Talking to: {this.props.currentreciver}</h5></div>
+                <div><h5>Talking to: {this.props.currentreciver.usid}</h5></div>
                 <div>
                     <div style={{ display: 'flex', flex: 1, flexDirection: 'row' }}>
                         <input type='text' placeholder="type..."></input>
-                        <button onClick={()=>{this._send()}}>send</button>
+                        <button onClick={() => { this._send() }}>send</button>
                     </div>
 
                 </div>
@@ -41,7 +44,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
 
-   // Onlineusers: (credential) => dispatch(Action.Onlineusers(credential)),
+    // Onlineusers: (credential) => dispatch(Action.Onlineusers(credential)),
     //CurrentReciver: (credential) => dispatch(Action.CurrentReciver(credential))
 
 

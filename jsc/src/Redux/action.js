@@ -20,19 +20,7 @@ module.exports = {
       credential
     }
   },
-  // _signout: (credential) => {
-  //   return {
-  //     type: "signout",
-  //     credential
-  //   }
-  // },
 
-  // _getLiveUsers: () => {
-  //   return {
-  //     type: "getLiveUsers",
-  //   }
-  // },
-  //||\\
   CurrentReciver: (credential) => {
     return {
       type: "currentreciver",

@@ -32,7 +32,7 @@ class LiveUser extends Component {
     }
 
     _selectUser = (data) => {
-        this.props.CurrentReciver(data.owner);
+        this.props.CurrentReciver(data);
     }
 
     render() {

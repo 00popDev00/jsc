@@ -4,6 +4,7 @@ import Action from "./Redux/action";
 
 // import Methods from './HelperFunctions/start_screen'
 
+//Add local storage clear  signout for all components
 
 class App extends Component {
 

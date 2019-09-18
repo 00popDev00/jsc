@@ -76,7 +76,11 @@ io.on('connection', (socket) => {
 
     globalSocket = socket;
 
+    socket.on('messageSent',(data)=>{
+        io.to(data).emit('message', 'for your eyes only');
 
+
+    })
 
 
     socket.on('getLiveUsers', () => {

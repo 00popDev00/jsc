@@ -29,19 +29,19 @@ class HomePage extends Component {
     }
 
     componentDidMount() {
-        if (this.props.username === undefined) {
-            if (localStorage.getItem('Token') === null) {
-                this.props.history.push('/')
+        if (this.props.username === undefined || localStorage.getItem('Token') === null) {
+            // if (localStorage.getItem('Token') === null) {
+            //     this.props.history.push('/')
 
-            }
-            else {
-
-
-                this.props.Username(localStorage.getItem('User'))
-                this.props.Token(localStorage.getItem('Token'))
+            // }
+            // else {
 
 
-            }
+            //     this.props.Username(localStorage.getItem('User'))
+            //     this.props.Token(localStorage.getItem('Token'))
+
+
+            // }
 
 
         }
