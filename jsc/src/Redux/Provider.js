@@ -5,7 +5,9 @@ var prestate = {
     status: undefined,
     token: undefined,
     onlineUser: [],
-    currentreciver:[],
+    currentreciver:undefined,
+    mysocket:undefined,
+    currentMD_id:undefined,
 }
 
 export default (state = prestate, action) => {
@@ -18,6 +20,8 @@ export default (state = prestate, action) => {
         case 'Onlineusers': return {...state,onlineUser:action.credential};
 
         case 'currentreciver': return {...state,currentreciver:action.credential};
+        
+        case 'currentMDid': return {...state,currentMD_id:action.credential};
 
        // case 'listentoSignout': return listentoSignout();
 

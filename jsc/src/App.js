@@ -27,7 +27,7 @@ class App extends Component {
     })
       .then(e => { return e.json() })
       .then(data => {
-        console.log('datais:', data)
+        // console.log('datais:', data)
       })
       .catch(error => console.error(error))
   }
@@ -48,11 +48,18 @@ class App extends Component {
     })
       .then(e => { return e.json() })
       .then(result => {
-        console.log('datais:', result);
-        this.props.Username(this.state.username)
-        this.props.Token(result.Token.usid)
-        localStorage.setItem('Token', result.Token.usid)
-        localStorage.setItem('User', result.Token.owner)
+        //console.log('datais:', result);
+
+        if (result.faith === -1) {
+          alert("Please signup first to login")
+        }
+        else {
+          this.props.Username(this.state.username)
+
+        }
+         this.props.Token(result.token.oMDlists)
+        //localStorage.setItem('Token', result.Token.usid)
+        //  localStorage.setItem('User', result.Token.owner)
 
         // return { ...state, username: data.u, token: result.Token }
       })
@@ -81,12 +88,12 @@ class App extends Component {
 
           <button onClick={() => {
 
+
+            this._signin();
+            // clearInterval(x);
+
+            // console.log('app=> ', this.props.username)
             let x = setInterval(() => {
-              this._signin();
-              // clearInterval(x);
-
-              // console.log('app=> ', this.props.username)
-
               if (this.props.username !== undefined) {
                 clearInterval(x);
                 this.props.history.push('/HomePage')

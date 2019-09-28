@@ -25,6 +25,7 @@ var UCD = [];//UsersCredentialDatabse
 app.post('/signup/', (req, res) => {
     //console.log(req.body)
     let faith = _signup(req.body);
+
     if (faith === 1) {
         res.send({ message: 'Successfully Signedup!', faith: faith })
 
@@ -38,16 +39,16 @@ app.post('/signup/', (req, res) => {
 
 app.post('/login', (req, res) => {
 
-    console.log(req.body)
-
+    // console.log(req.body)
+    var token = '';
     let faith = _signin(req.body);
     if (faith !== -1) {
 
-        _tokenManager(req.body.userid);
+        token = _tokenManager(req.body.userid);
         _broadcastOnlineUser();
     }
 
-    res.send({ faith: faith, Token: TokenMaster[faith] })
+    res.send({ faith: faith, token: token })
     // socket.emit('SigninACK', {faith:faith,Token:TokenMaster[faith]});
 
 })
@@ -72,12 +73,45 @@ app.post('/signout', (req, res) => {
 
 })
 
+
+
+app.post('/getDlist', (req, res) => {
+
+    console.log('Request: ', req.body);
+
+    if (req.body.omd_id !== undefined) {
+        var Dlists = _DlistsFinder(req.body.omd_id);
+        console.log(Dlists);
+
+
+        res.send(Dlists);
+    }
+    else {
+        console.log("No chats");
+
+        res.send({ "error": "No chats" })
+    }
+
+})
+
+
+
 io.on('connection', (socket) => {
 
     globalSocket = socket;
+    // _tokenManager(req.body.userid)
+    //socket.emit('credential',socket.id  )
+    console.log(' globalSocket conneted', globalSocket.id)
 
-    socket.on('messageSent',(data)=>{
-        io.to(data).emit('message', 'for your eyes only');
+    socket.on('messageSent', (data) => {
+        _updatedatabase(data);
+        var messagePacakge = {
+            "message": data.message,
+            "timestamp": data.timestamp,
+            "owner": data.sender,
+        }
+        socket.broadcast.to(data.rusid).emit('message', messagePacakge);
+        socket.emit('message', messagePacakge);
 
 
     })
@@ -128,24 +162,30 @@ _signup = (data) => {
 
 
 _signin = (data) => {
-    console.log(data)
+    // console.log(data)
     return UCD.findIndex(e => { return e.password === data.password })
 
 }
 
 _tokenManager = (data) => {
-
-    if (TokenMaster.findIndex(e => { return e.owner === data }) === -1) {
+    var faith = TokenMaster.findIndex(e => { return e.owner === data });
+    if (faith === -1) {
         let newToken = {
             owner: data,
             usid: globalSocket.id,
-            time: new Date()
+            time: new Date(),
+            oMDlists: UCD[_oMDlistsFinder(data)].oMDlists,
+
         }
 
         TokenMaster.push(newToken);
-        globalSocket.emit('myToken', newToken);
+        return newToken;
 
         // console.log('\nToken Master:\n', TokenMaster, '\n')
+    }
+    else {
+        //already logged in
+        return TokenMaster[faith];
     }
 }
 
@@ -158,8 +198,74 @@ _broadcastOnlineUser = () => {
 
 }
 
+_updatedatabase = (data) => {
+
+
+    var newEntry = {
+        owner: data.sender,
+        message: data.message,
+        timestamp: data.timestamp
+    }
+
+
+
+
+    if (data.MD_id === undefined) {
+        //create New MD_id
+
+        var newPackage = {
+            author: [data.sender, data.reciver],
+            Dlists: [
+                newEntry
+            ]
+        }
+
+        MasterDatabase.push(newPackage);
+
+        //update oMDlists
+        var sfaith = _oMDlistsFinder(data.sender);
+        var rfaith = _oMDlistsFinder(data.reciver);
+
+
+        var newID = { branch: MasterDatabase.length - 1, shared: data.reciver }
+        UCD[sfaith].oMDlists.push(newID);
+
+        newID = { branch: MasterDatabase.length - 1, shared: data.sender }
+        UCD[rfaith].oMDlists.push(newID)
+
+        globalSocket.emit('updateoMDlist', UCD[sfaith].oMDlists);
+        globalSocket.to(data.rusid).emit('updateoMDlist', UCD[rfaith].oMDlists);
+
+        globalSocket.emit('newMDID', newID);
+        globalSocket.to(data.rusid).emit('newMDID', newID);
+
+
+    }
+    else {
+
+        MasterDatabase[data.MD_id].Dlists.push(newEntry)
+    }
+
+
+
+
+    //  MasterDatabase
+
+}
+
+
+_DlistsFinder = (credential) => {
+
+    return MasterDatabase[credential].Dlists
+}
+
+
+_oMDlistsFinder = (credential) => {
+
+    return UCD.findIndex((e) => { return e.owner === credential });
+}
 
 http.listen(1001, () => {
-    console.log('Server started on 3000 port')
+    console.log('Server started on 1001 port')
 })
 app.listen(5000)

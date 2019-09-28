@@ -27,6 +27,12 @@ module.exports = {
       credential
     }
   },
+  CurrentMDid: (credential) => {
+    return {
+      type: "currentMDid",
+      credential
+    }
+  },
   
   
 

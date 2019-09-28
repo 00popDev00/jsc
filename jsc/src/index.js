@@ -5,8 +5,11 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import functionProvider from './Redux/Provider'
+import { composeWithDevTools } from 'redux-devtools-extension';
 
-const store = createStore(functionProvider)
+const store = createStore(functionProvider, composeWithDevTools(
+  
+  ));
 
 
 ReactDOM.render(
