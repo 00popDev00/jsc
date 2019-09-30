@@ -8,67 +8,70 @@ import Action from "../Redux/action";
 class Chat extends Component {
     state = {
         onlineUser: [],
-        messageList: [],
+        messageList: this.props.currentchats,
         message: undefined,
         omd_id: undefined,
 
     }
 
+    componentWillReceiveProps(newProps) {
 
-    _getDatabase = () => {
+        if (newProps.owner !== this.props.owner) {
+            this.setState({
+                onlineUser: [],
+                messageList: [],
+                message: undefined,
 
-        fetch('http://localhost:5000/getDlist/', {
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json'
-            },
-            method: 'post',
-            body: JSON.stringify({
-                "omd_id": this.props.currentMD_id,
-            }),
-        })
-            .then(e => { return e.json() })
-            .then(result => {
-                console.log('Dlist:', result);
-                this.setState({messageList :result  });
+            });
+            this.props.CurrentChats([])
+        }
+        else {
+            this.setState({
+                onlineUser: [],
+                messageList: this.props.currentchats,
+                message: undefined,
+
+            });
+        }
 
 
-            })
-            .catch(error => console.error(error))
+
+        //  this._getDatabase();
     }
 
-    componentWillReceiveProps() {
+
+    componentWillUnmount() {
+
         this.setState({
             onlineUser: [],
             messageList: [],
             message: undefined,
 
         });
-        this._getDatabase();
-
-
-      
+        this.props.CurrentChats([])
 
     }
-    componentWillUpdate() {
 
-    }
     componentDidMount() {
+        //      console.log('componentDidMount', this.props)
 
         if (this.props.currentreciver !== undefined) {
-            this._getDatabase();
+            // this._getDatabase();
 
-         
+
         }
-        else{
+        else {
             console.log("Loading.....no reciver selected yet")
         }
 
 
         this.props.socket.on('message', (data) => {
             var ml = this.state.messageList;
-            ml.push(data);
 
+            //  console.log("ml", ml, "data", data)
+
+            ml.push(data);
+            this.props.CurrentChats(ml)
             this.setState({ messageList: ml });
 
         })
@@ -97,10 +100,10 @@ class Chat extends Component {
 
                 <div><h5>Talking to: {this.props.currentreciver === undefined ? 'no user' : this.props.currentreciver.usid}</h5></div>
                 <div>
-                    {this.state.messageList.map((e, index) => (
+                    {this.state.messageList.length > 0 ? this.state.messageList.map((e, index) => (
 
                         <li key={index}> <h4>{e.owner}</h4><p>{e.message} <b> {e.timestamp}</b></p></li>
-                    ))}
+                    )) : null}
                 </div>
 
                 <div>
@@ -120,6 +123,7 @@ const mapStateToProps = state => ({
     ...state
 });
 const mapDispatchToProps = dispatch => ({
+    CurrentChats: (credential) => dispatch(Action.CurrentChats(credential)),
 
     // Onlineusers: (credential) => dispatch(Action.Onlineusers(credential)),
     //CurrentReciver: (credential) => dispatch(Action.CurrentReciver(credential))

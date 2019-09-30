@@ -4,7 +4,7 @@ import Action from "../Redux/action";
 
 
 class LiveUser extends Component {
-    state = { onlineUser: [], }
+    state = { onlineUser: [], messageList: [] }
 
     // componentWillUpdate(nextProps, nextState) {
     //     console.log('nextProps: ', nextProps)
@@ -13,6 +13,39 @@ class LiveUser extends Component {
     //     //     this.setState({onlineUser: this.props.onlineUser})
     //     // }
     // }
+    _getDatabase = (branch) => {
+
+        fetch('http://localhost:5000/getDlist/', {
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            method: 'post',
+            body: JSON.stringify({
+                "omd_id": branch,
+            }),
+        })
+            .then(e => { return e.json() })
+            .then(result => {
+                console.log('Dlist result:', result, this.props.currentMD_id);
+                if (result.error === "NoChats") {
+
+
+                }
+                else {
+                    this.setState({ messageList: result });
+                    this.props.CurrentChats(result)
+
+
+                  //  console.log("currentchats",this.props.currentchats , "messageList",this.state.messageList)
+
+                }
+
+
+
+            })
+            .catch(error => console.error(error))
+    }
 
     componentDidMount() {
 
@@ -24,35 +57,45 @@ class LiveUser extends Component {
 
         this.props.socket.on('updateoMDlist', (data) => {
             console.log("updateoMDlist", data)
-            this.props.Token(data)
+    
+            this.props.OMDlists(data)
             // this.setState({ omd_id: data });
 
         })
         this.props.socket.on('newMDID', (data) => {
+            let newToken = this.props.token
+            console.log("token", newToken)
             console.log("newMDID", data)
-            this.props.CurrentMDid(data)
-           // this.setState({ omd_id: data });
+
+
+            //    this.props.CurrentMDid(data.branch)
+            // this.setState({ omd_id: data });
 
         })
 
 
-        
+
     }
 
     _selectUser = (data) => {
-
-        var faith = this.props.token.findIndex(e => { return e.shared === data.owner })
+console.log("\n\n===================================")
+        var faith = this.props.oMDlists.findIndex(e => { return e.shared === data.owner })
         if (faith === -1) {
-            console.log("error", this.props.token)
+            console.log("error", data)
         }
         else {
-            console.log("branch:", this.props.token[faith].branch)
-            this.props.CurrentMDid(this.props.token[faith].branch)
+           // console.log("branch:", this.props.token[faith].branch)
+            this.props.CurrentMDid(this.props.oMDlists[faith].branch)
+          //  console.log("currentMD_id on select:", this.props.currentMD_id)
+            this._getDatabase(this.props.oMDlists[faith].branch);
+           //console.log("_getDatabase on select:", this.props.currentMD_id)
+
 
         }
 
         this.props.CurrentReciver(data);
 
+        console.log("===================================\n\n")
 
 
     }
@@ -88,7 +131,9 @@ const mapDispatchToProps = dispatch => ({
     Onlineusers: (credential) => dispatch(Action.Onlineusers(credential)),
     CurrentReciver: (credential) => dispatch(Action.CurrentReciver(credential)),
     CurrentMDid: (credential) => dispatch(Action.CurrentMDid(credential)),
-    Token: (credential) => dispatch(Action.Token(credential)),
+    OMDlists: (credential) => dispatch(Action.OMDlists(credential)),
+    CurrentChats: (credential) => dispatch(Action.CurrentChats(credential)),
+
 
 
 

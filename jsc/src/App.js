@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import Action from "./Redux/action";
+import ClientSocket from 'socket.io-client';
 
+var socket;
 // import Methods from './HelperFunctions/start_screen'
 
 //Add local storage clear  signout for all components
@@ -57,7 +59,7 @@ class App extends Component {
           this.props.Username(this.state.username)
 
         }
-         this.props.Token(result.token.oMDlists)
+         this.props.OMDlists(result.token.oMDlists)
         //localStorage.setItem('Token', result.Token.usid)
         //  localStorage.setItem('User', result.Token.owner)
 
@@ -118,7 +120,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   Username: (credential) => dispatch(Action.Username(credential)),
-  Token: (credential) => dispatch(Action.Token(credential)),
+  OMDlists: (credential) => dispatch(Action.OMDlists(credential)),
   // signout: (credential) => dispatch(Action._signout(credential))
 
 

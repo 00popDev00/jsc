@@ -81,15 +81,15 @@ app.post('/getDlist', (req, res) => {
 
     if (req.body.omd_id !== undefined) {
         var Dlists = _DlistsFinder(req.body.omd_id);
-        console.log(Dlists);
+        console.log("Dlists",Dlists);
 
 
         res.send(Dlists);
     }
     else {
-        console.log("No chats");
+        console.log("NoChats");
 
-        res.send({ "error": "No chats" })
+        res.send({ "error": "NoChats" })
     }
 
 })
@@ -234,6 +234,7 @@ _updatedatabase = (data) => {
         UCD[rfaith].oMDlists.push(newID)
 
         globalSocket.emit('updateoMDlist', UCD[sfaith].oMDlists);
+        console.log(data.rusid)
         globalSocket.to(data.rusid).emit('updateoMDlist', UCD[rfaith].oMDlists);
 
         globalSocket.emit('newMDID', newID);
@@ -242,7 +243,7 @@ _updatedatabase = (data) => {
 
     }
     else {
-
+console.log("data.MD_id",data.MD_id,"\n");
         MasterDatabase[data.MD_id].Dlists.push(newEntry)
     }
 
@@ -256,6 +257,7 @@ _updatedatabase = (data) => {
 
 _DlistsFinder = (credential) => {
 
+    console.log("credential",credential)
     return MasterDatabase[credential].Dlists
 }
 

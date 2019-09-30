@@ -32,8 +32,13 @@ class HomePage extends Component {
             .catch(error => console.error(error))
     }
 
-    componentDidMount() {
+    componentWillMount() {
 
+        if (this.props.username === undefined) {
+            console.log("reload");
+            this.props.history.push('/')
+        }
+      
     }
     render() {
         //      console.log('username Homepage=>', this.props.username)
@@ -70,7 +75,6 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
     Username: (credential) => dispatch(Action.Username(credential)),
-    Token: (credential) => dispatch(Action.Token(credential)),
 
 
 
