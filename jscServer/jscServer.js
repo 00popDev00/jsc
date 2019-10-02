@@ -79,18 +79,32 @@ app.post('/getDlist', (req, res) => {
 
     console.log('Request: ', req.body);
 
-    if (req.body.omd_id !== undefined) {
-        var Dlists = _DlistsFinder(req.body.omd_id);
-        console.log(Dlists);
+    try {
+        if (req.body.omd_id.branch !== undefined) {
+            var Dlists = _DlistsFinder(req.body.omd_id.branch);
+            console.log(Dlists);
 
+            if (Dlists === "noChats") {
+                res.send({ "error": "No chats" })
 
-        res.send(Dlists);
+            }
+            else {
+                res.send(Dlists);
+
+            }
+        }
+        else {
+            console.log("No chats");
+
+            res.send({ "error": "No chats" })
+        }
+
     }
-    else {
-        console.log("No chats");
-
+    catch (e) {
         res.send({ "error": "No chats" })
+
     }
+
 
 })
 
@@ -256,7 +270,21 @@ _updatedatabase = (data) => {
 
 _DlistsFinder = (credential) => {
 
-    return MasterDatabase[credential].Dlists
+    var newDlist = MasterDatabase[credential].Dlists
+
+    if (newDlist === undefined) {
+
+        console.log("\n", MasterDatabase[credential].Dlists, "\n", MasterDatabase, "\n")
+        return "noChats"
+
+
+    }
+    else {
+        return newDlist
+
+    }
+
+
 }
 
 

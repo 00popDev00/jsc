@@ -8,7 +8,7 @@ import Action from "../Redux/action";
 class Chat extends Component {
     state = {
         onlineUser: [],
-        messageList: [],
+        messageList: [{message:'none',timestamp:'none',owner:'none'}],
         message: undefined,
         omd_id: undefined,
 
@@ -25,12 +25,22 @@ class Chat extends Component {
             method: 'post',
             body: JSON.stringify({
                 "omd_id": this.props.currentMD_id,
+                "owner": this.props.username,
+
             }),
         })
             .then(e => { return e.json() })
             .then(result => {
                 console.log('Dlist:', result);
+                if(result.error ==="No chats")
+                {
+
+                }
+                else
+                {
                 this.setState({messageList :result  });
+
+                }
 
 
             })

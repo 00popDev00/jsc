@@ -43,7 +43,7 @@ class LiveUser extends Component {
 
         var faith = this.props.token.findIndex(e => { return e.shared === data.owner })
         if (faith === -1) {
-            console.log("error", this.props.token)
+            console.log("no bramch found..new chat", this.props.token)
         }
         else {
             console.log("branch:", this.props.token[faith].branch)
