@@ -34,6 +34,7 @@ class LiveUser extends Component {
                 }
                 else {
                     this.setState({ messageList: result });
+                    console.log('hit')
                     this.props.CurrentChats(result)
 
 
@@ -81,7 +82,10 @@ class LiveUser extends Component {
 console.log("\n\n===================================")
         var faith = this.props.oMDlists.findIndex(e => { return e.shared === data.owner })
         if (faith === -1) {
-            console.log("error", data)
+            console.log("error", data);
+            this.props.CurrentChats([])
+
+
         }
         else {
            // console.log("branch:", this.props.token[faith].branch)
@@ -92,8 +96,9 @@ console.log("\n\n===================================")
 
 
         }
+        setTimeout(()=>{        this.props.CurrentReciver(data);
+        },100)
 
-        this.props.CurrentReciver(data);
 
         console.log("===================================\n\n")
 
