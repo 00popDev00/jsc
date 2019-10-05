@@ -1,9 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import Action from "../Redux/action";
+import '../style/Chat.css'
+import { Avatar, Icon, Menu, Dropdown, Button } from 'antd';
+
 //import ClientSocket from 'socket.io-client';
 
 //var socket = ClientSocket("http://localhost:1001/");
+const menu = (
+    <Menu>
+        <Menu.Item>
+            1st menu item
+      </Menu.Item>
+        <Menu.Item>
+            2nd menu item
+      </Menu.Item>
+        <Menu.Item>
+            3rd menu item
+      </Menu.Item>
+    </Menu>
+);
 
 class Chat extends Component {
     state = {
@@ -96,23 +112,44 @@ class Chat extends Component {
         //     "timestamp": data.timestamp,
         //     "owner":data.sender, 
         return (
-            <div>
+            <div id="ChatContainer">
+                <div id="ReciverHeader">
+                    <div id="UserAvtar_Div">
+                        <Avatar size={60} icon="user"
+                            onClick={() => alert('Avtar_Info')}
+                        />
+                    </div>
+                    <div id="ReciverName">
+                        <h5> {this.props.currentreciver === undefined ? 'no user' : this.props.currentreciver.owner}</h5>
+                    </div>
+                    <Icon type="setting" theme="twoTone" />
 
-                <div><h5>Talking to: {this.props.currentreciver === undefined ? 'no user' : this.props.currentreciver.usid}</h5></div>
-                <div>
-                    {this.state.messageList.length > 0 ? this.state.messageList.map((e, index) => (
-
-                        <li key={index}> <h4>{e.owner}</h4><p>{e.message} <b> {e.timestamp}</b></p></li>
-                    )) : null}
                 </div>
+                <div id="ChatArea">
+                    <div>
+                        {this.state.messageList.length > 0 ? this.state.messageList.map((e, index) => (
 
-                <div>
+                            <div id="ChatBubble">
+                                <div id="Message"> {e.message}</div>
+                                <div id="Timestamp"> {e.timestamp}</div>
+
+                            </div>
+                        )) : null}
+                    </div>
+                </div>
+                <div id="SendContainer">
                     <div style={{ display: 'flex', flex: 1, flexDirection: 'row' }}>
                         <input type='text' placeholder="type..." onChange={(e) => { this.setState({ message: e.target.value }) }}  ></input>
                         <button onClick={() => { this._send() }}>send</button>
                     </div>
-
                 </div>
+
+
+
+
+
+
+
             </div>
         );
     }

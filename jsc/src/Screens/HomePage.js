@@ -5,6 +5,7 @@ import Chat from '../Components/chat'
 import Action from "../Redux/action";
 import React, { Component } from 'react';
 import ClientSocket from 'socket.io-client';
+import '../style/HomePage.css'
 
 var socket = ClientSocket("http://localhost:1001/");
 
@@ -44,8 +45,9 @@ class HomePage extends Component {
         //      console.log('username Homepage=>', this.props.username)
 
         return (
-            <div>
-                <h4>homePage</h4>
+            <div id="HomepageContainer">
+                
+                {/* <h4>homePage</h4>
                 <button onClick={() => {
 
                     // this.props.signout();
@@ -53,17 +55,11 @@ class HomePage extends Component {
                     this.props.history.push('/')
 
 
-                }}>Signout</button>
-                <div style={{ display: 'flex', flex: 1, flexDirection: 'row' }}>
-                    <div style={{ flex: 1 }}>
-                        Live users
+                }}>Signout</button> */} 
                         <LiveUser socket={socket} />
-                    </div>
-                    <div style={{ flex: 1 }}>
-                        chat module
+        
                         <Chat socket={socket} />
-                    </div>
-                </div>
+                    
 
             </div>
         );

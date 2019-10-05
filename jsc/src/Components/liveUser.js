@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import Action from "../Redux/action";
+import '../style/Liveuser.css'
+//import "antd/dist/antd.css";
 
+import { Avatar, Badge } from 'antd';
 
 class LiveUser extends Component {
     state = { onlineUser: [], messageList: [] }
@@ -37,7 +40,7 @@ class LiveUser extends Component {
                     this.props.CurrentChats(result)
 
 
-                  //  console.log("currentchats",this.props.currentchats , "messageList",this.state.messageList)
+                    //  console.log("currentchats",this.props.currentchats , "messageList",this.state.messageList)
 
                 }
 
@@ -57,7 +60,7 @@ class LiveUser extends Component {
 
         this.props.socket.on('updateoMDlist', (data) => {
             console.log("updateoMDlist", data)
-    
+
             this.props.OMDlists(data)
             // this.setState({ omd_id: data });
 
@@ -78,17 +81,17 @@ class LiveUser extends Component {
     }
 
     _selectUser = (data) => {
-console.log("\n\n===================================")
+        console.log("\n\n===================================")
         var faith = this.props.oMDlists.findIndex(e => { return e.shared === data.owner })
         if (faith === -1) {
             console.log("error", data)
         }
         else {
-           // console.log("branch:", this.props.token[faith].branch)
+            // console.log("branch:", this.props.token[faith].branch)
             this.props.CurrentMDid(this.props.oMDlists[faith].branch)
-          //  console.log("currentMD_id on select:", this.props.currentMD_id)
+            //  console.log("currentMD_id on select:", this.props.currentMD_id)
             this._getDatabase(this.props.oMDlists[faith].branch);
-           //console.log("_getDatabase on select:", this.props.currentMD_id)
+            //console.log("_getDatabase on select:", this.props.currentMD_id)
 
 
         }
@@ -103,20 +106,54 @@ console.log("\n\n===================================")
     render() {
 
         return (
-            <div >
+            <div id="LiveuserContainer">
+                <div id="UserProfileTab">
+                    <div id="UserAvtar_Div">
+                        <Avatar size={64} icon="user"
+                            onClick={() => alert('Avtar_Div')}
+                        />
+                    </div>
+                    <div id="UserContent_Div">
+                        data
+                    </div>
+                </div>
+                <div id="OnlineUsersContainer">
 
-                <u>
+
                     {this.props.onlineUser.map((e, index) => (
                         e.owner !== this.props.username ?
-                            <li
-                                onClick={() => this._selectUser(e)}
-                                key={index}>
-                                {e.owner}
-                            </li>
+
+
+
+                            <div id="OnlineUsersTab" >
+                                <div id="ReciverAvtar_Div"
+                                    key={index}
+                                >
+                                    <Badge count={1}>
+                                        <Avatar size={40} icon="user"
+                                            onClick={() => alert('ReciverAvtar_Div')}
+                                        />
+                                    </Badge>
+
+                                </div>
+                                <div id="ReciverContent_Div"
+                                    onClick={() => this._selectUser(e)}
+
+                                >
+                                    {e.owner}
+
+                                </div>
+
+
+                            </div>
+
+
                             : null
 
                     ))}
-                </u>
+                </div>
+
+
             </div>
         );
     }

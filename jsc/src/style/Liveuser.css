@@ -1,0 +1,75 @@
+#LiveuserContainer {
+    flex: 2;
+    flex-direction: column;
+    background: #367abe;
+    border: none;
+}
+
+#UserProfileTab {
+    display: flex;
+    height: 10%;
+    border: none;
+}
+
+#UserAvtar_Div {
+    flex: 0.8;
+    align-items: center;
+    justify-content: center;
+    border: none;
+}
+
+#UserAvtar_Div:hover {
+    cursor: pointer;
+}
+
+#UserContent_Div {
+    flex: 3.2;
+    align-items: center;
+    border: none;
+}
+
+#OnlineUsersContainer {
+    background: #36723e;
+    border: none;
+    display: flex;
+    height: 100%;
+    border: none;
+    flex-direction: column;
+}
+
+#OnlineUsersTab {
+
+    max-height: 70px;
+    border: none;
+    border-bottom:1px solid #fff;
+
+}
+
+#OnlineUsersTab:hover{
+    background: #82a887;
+
+}
+
+
+#ReciverAvtar_Div {
+    flex: 0.8;
+    align-items: center;
+    justify-content: center;
+    border: none;
+
+}
+
+#ReciverAvtar_Div:hover {
+    cursor: pointer;
+}
+
+#ReciverContent_Div{
+    flex: 3.2;
+    align-items: center;
+    border: none;
+
+}
+
+#ReciverContent_Div:hover {
+    cursor: pointer;
+}
