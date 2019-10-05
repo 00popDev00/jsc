@@ -116,10 +116,11 @@ class Chat extends Component {
                 <div id="ReciverHeader">
                     <div id="UserAvtar_Div">
                         <Avatar size={60} icon="user"
-                            onClick={() => alert('Avtar_Info')}
+                            onClick={() => alert('Avtar_Info')}     
                         />
                     </div>
                     <div id="ReciverName">
+                        
                         <h5> {this.props.currentreciver === undefined ? 'no user' : this.props.currentreciver.owner}</h5>
                     </div>
                     <Icon type="setting" theme="twoTone" />
