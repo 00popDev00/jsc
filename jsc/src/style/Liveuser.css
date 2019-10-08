@@ -1,7 +1,7 @@
 #LiveuserContainer {
     flex: 2;
     flex-direction: column;
-    background: #367abe;
+    /* background: #367abe; */
     border: none;
 }
 
@@ -9,6 +9,8 @@
     display: flex;
     height: 10%;
     border: none;
+    box-shadow: 3px 3px 5px 6px #ccc;
+
 }
 
 #UserAvtar_Div {
@@ -16,6 +18,7 @@
     align-items: center;
     justify-content: center;
     border: none;
+    
 }
 
 #UserAvtar_Div:hover {
@@ -26,10 +29,11 @@
     flex: 3.2;
     align-items: center;
     border: none;
+    
 }
 
 #OnlineUsersContainer {
-    background: #36723e;
+    /* background: #36723e; */
     border: none;
     display: flex;
     height: 100%;
@@ -41,12 +45,14 @@
 
     max-height: 70px;
     border: none;
-    border-bottom:1px solid #fff;
+    border-bottom:1px solid #f2f2f2;
+    box-shadow: 0 4px 5px -6px black;
 
 }
 
 #OnlineUsersTab:hover{
-    background: #82a887;
+    background: #f2f2f2;
+
 
 }
 

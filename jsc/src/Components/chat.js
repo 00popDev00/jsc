@@ -50,6 +50,8 @@ class Chat extends Component {
             });
         }
 
+        if(this.props.currentreciver !=)
+
 
 
         //  this._getDatabase();
@@ -127,7 +129,7 @@ class Chat extends Component {
 
                 </div>
                 <div id="ChatArea">
-                    <div>
+                    
                         {this.state.messageList.length > 0 ? this.state.messageList.map((e, index) => (
 
                             <div id="ChatBubble">
@@ -136,13 +138,11 @@ class Chat extends Component {
 
                             </div>
                         )) : null}
-                    </div>
+                    
                 </div>
                 <div id="SendContainer">
-                    <div style={{ display: 'flex', flex: 1, flexDirection: 'row' }}>
-                        <input type='text' placeholder="type..." onChange={(e) => { this.setState({ message: e.target.value }) }}  ></input>
-                        <button onClick={() => { this._send() }}>send</button>
-                    </div>
+                        <input id="InputSend" type='text' placeholder="type..." onChange={(e) => { this.setState({ message: e.target.value }) }}  ></input>
+                        <button id="ButtonSend" onClick={() => { this._send() }}>send</button>
                 </div>
 
 

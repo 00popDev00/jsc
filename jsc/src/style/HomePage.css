@@ -2,18 +2,19 @@
     display: flex;
     flex-direction: 'row';
     min-height: 100vh;
-    background: #AA3466;
+    /* background: #AA3466; */
     border: none;
 
 }
 
 
 /* Testing Mode */
-div{
     /* cursor:grab/pointer; */
 
+div{
+
     display: flex;
-    border: 1px solid red;
+    /* border: 1px solid red; */
     height: 100%;
     width: 100%;
     

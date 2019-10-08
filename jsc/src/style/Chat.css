@@ -1,14 +1,15 @@
 #ChatContainer {
     display: flex;
     flex: 7;
-    background: #cc7abe;
+    background: url('../Images/Wallpaper.png') no-repeat center center fixed;
     flex-direction: column;
+    
 }
 
 #ReciverHeader {
     background: #fff;
     flex: 1;
-    max-height: 70px;
+    max-height: 84px;
     padding: 5px;
 }
 
@@ -16,14 +17,40 @@
     padding: 5px
 }
 
-#ChatArea {
-    background: #13f3f3;
+#ChatArea{
+    /* background: #13f3f3; */
     flex: 3;
+    flex-direction: column;
+    
+
+    overflow-y: hidden;
+
+}
+
+#ChatArea:hover{
+    /* background: #13f3f3; */
+   
+    overflow: auto;
 }
 
 #SendContainer {
-    background: #1303a3;
-    flex: 1;
+    /* background: #1303a3; */
+    flex: 0.5;
+    
+}
+
+#InputSend{
+    margin: 10px;
+width: 80%;
+height: 50%;
+}
+
+#ButtonSend{
+    margin: 10px;
+border-radius: 50%;
+height: 50%; 
+    width: 4.5%;
+
 }
 
 #ReciverName {
@@ -33,6 +60,7 @@
     font-size: 28px
 }
 
+/* 
 #ChatBubble {
     background: #a3b3c3;
     display: flex;
@@ -40,6 +68,57 @@
     max-height: 60px;
     min-width: 200px;
     max-width: 600px;
+    
 
     
-}     
+}    */
+
+#ChatBubble {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: 120px;
+    padding: 0px;
+    background: #CF5858;
+    top: 10px;
+    left: 20px;
+    /* -webkit-border-radius: 10px;
+   -moz-border-radius: 10px; */
+    border-radius: 10px;
+    max-height: 60px;
+    min-height: 60px;
+    min-width: 200px;
+    max-width: 600px;
+    margin-bottom: 10px;
+    
+}
+
+#ChatBubble:after {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 20px 20px 20px 0;
+    border-color: transparent #CF5858;
+    display: block;
+    width: 0;
+    z-index: 1;
+    left: -20px;
+    top: 10px;
+}
+#Message{
+    /* background: rgb(224, 201, 201); */
+    padding-left: 15px ;
+    padding-top: 5px ;
+
+
+}
+#Timestamp{
+        /* background: rgb(224, 201, 201); */
+
+    display: flex;
+align-items: flex-end;
+justify-content: flex-end;
+padding-bottom: 5px;
+padding-right: 10px;
+}
