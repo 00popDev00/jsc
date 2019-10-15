@@ -24,7 +24,7 @@ const menu = (
 class Chat extends Component {
     state = {
         onlineUser: [],
-        messageList: this.props.currentchats,
+        messageList: [],
         message: undefined,
         omd_id: undefined,
 
@@ -39,29 +39,30 @@ class Chat extends Component {
                 message: undefined,
 
             });
-            this.props.CurrentChats([])
+            console.log('idk')
+            // this.props.CurrentChats([])
         }
         else {
-            this.setState({
-                onlineUser: [],
-                messageList: this.props.currentchats,
-                message: undefined,
+            // console.log('idk',this.props.currentchats)
 
-            });
+            // this.setState({
+            //     messageList: this.props.currentchats === undefined? [] :this.props.currentchats ,
+            //     message: '',
+
+            // });
+
         }
 
-        if(this.props.currentreciver !=)
 
-
-
-        //  this._getDatabase();
     }
 
+    // componentWillUpdate() {
+
+    // }
 
     componentWillUnmount() {
 
         this.setState({
-            onlineUser: [],
             messageList: [],
             message: undefined,
 
@@ -86,11 +87,17 @@ class Chat extends Component {
         this.props.socket.on('message', (data) => {
             var ml = this.state.messageList;
 
-            //  console.log("ml", ml, "data", data)
+            console.log("data from send", data)
 
             ml.push(data);
             this.props.CurrentChats(ml)
-            this.setState({ messageList: ml });
+            console.log('---=>', this.props.currentchats)
+            this.setState({ messageList: this.props.currentchats });
+
+            if (this.props.currentMD_id === undefined) {
+                this.props.CurrentMDid(data.MD_id);
+            }
+
 
         })
     }
@@ -107,6 +114,7 @@ class Chat extends Component {
 
 
         this.props.socket.emit('messageSent', sendPackage);
+        this.setState({ message: '' })
     }
 
     render() {
@@ -118,31 +126,36 @@ class Chat extends Component {
                 <div id="ReciverHeader">
                     <div id="UserAvtar_Div">
                         <Avatar size={60} icon="user"
-                            onClick={() => alert('Avtar_Info')}     
+                            onClick={() => alert('Avtar_Info')}
                         />
                     </div>
                     <div id="ReciverName">
-                        
+
                         <h5> {this.props.currentreciver === undefined ? 'no user' : this.props.currentreciver.owner}</h5>
                     </div>
                     <Icon type="setting" theme="twoTone" />
 
                 </div>
                 <div id="ChatArea">
-                    
-                        {this.state.messageList.length > 0 ? this.state.messageList.map((e, index) => (
+                    {this.props.currentchats !== undefined ?
+                        this.props.currentchats.length > 0 ? this.props.currentchats.map((e, index) => (
 
-                            <div id="ChatBubble">
+                            <div id="ChatBubble" key={index}>
                                 <div id="Message"> {e.message}</div>
                                 <div id="Timestamp"> {e.timestamp}</div>
 
                             </div>
-                        )) : null}
-                    
+                        )) : null
+
+
+
+                        : null}
+
+
                 </div>
                 <div id="SendContainer">
-                        <input id="InputSend" type='text' placeholder="type..." onChange={(e) => { this.setState({ message: e.target.value }) }}  ></input>
-                        <button id="ButtonSend" onClick={() => { this._send() }}>send</button>
+                    <input id="InputSend" type='text' placeholder="type..." onChange={(e) => { this.setState({ message: e.target.value }) }}  ></input>
+                    <button id="ButtonSend" onClick={() => { this._send() }}>send</button>
                 </div>
 
 
@@ -162,6 +175,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
     CurrentChats: (credential) => dispatch(Action.CurrentChats(credential)),
+    CurrentMDid: (credential) => dispatch(Action.CurrentMDid(credential)),
 
     // Onlineusers: (credential) => dispatch(Action.Onlineusers(credential)),
     //CurrentReciver: (credential) => dispatch(Action.CurrentReciver(credential))

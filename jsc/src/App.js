@@ -60,15 +60,28 @@ class App extends Component {
             .then(result => {
                 //console.log('datais:', result);
 
-                if (result.faith === -1) {
-                    alert("Please signup first to login")
-                } else {
-                    this.props.Username(this.state.username)
-
+                if (result.faith === 404) {
+                    alert('Please refresh the session');
                 }
-                this.props.OMDlists(result.token.oMDlists)
-                //localStorage.setItem('Token', result.Token.usid)
-                //  localStorage.setItem('User', result.Token.owner)
+                else {
+
+                    if (result.faith === -1) {
+                        alert("Please signup first to login")
+                    } else {
+                        this.props.Username(this.state.username)
+
+                    }
+                    this.props.OMDlists(result.token.oMDlists)
+                    //localStorage.setItem('Token', result.Token.usid)
+
+
+                    //console.log(result.token.owner)
+
+                    localStorage.setItem(result.token.owner, result.token.owner)
+                }
+
+
+
 
                 // return { ...state, username: data.u, token: result.Token }
             })
@@ -80,11 +93,11 @@ class App extends Component {
         return (
 
             <div id="Appcontainer" >
-                <div id="Left_Appcontainer" > 
-                <img
-                id="LeftContainerImage" 
-                src={require('./Images/LeftContainer.jpg')} />
-                
+                <div id="Left_Appcontainer" >
+                    <img
+                        id="LeftContainerImage"
+                        src={require('./Images/LeftContainer.jpg')} />
+
                 </div>
                 <div id="Rigth_Appcontainer">
                     <div id="Login_container" >
@@ -119,12 +132,12 @@ class App extends Component {
                                 onChange={
                                     (e) => this.setState({ password: e.target.value })}
                             /> */}
-                              <div id='ForgetP'>
-                            <a>Forgot password</a>
-                        </div>
+                            <div id='ForgetP'>
+                                <a>Forgot password</a>
+                            </div>
 
                         </p>
-                      
+
 
                         <p id="Button_Container">
                             {/* <button onClick={this._signup} > Signup </button> */}

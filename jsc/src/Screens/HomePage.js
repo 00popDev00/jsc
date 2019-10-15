@@ -13,7 +13,7 @@ class HomePage extends Component {
 
     state = {}
 
-    _signout = () => {
+    _signout = (user=this.props.username) => {
         fetch('http://localhost:5000/signout/', {
             headers: {
                 'Accept': 'application/json, text/plain, */*',
@@ -21,7 +21,7 @@ class HomePage extends Component {
             },
             method: 'post',
             body: JSON.stringify({
-                'userid': this.props.username,
+                'userid': user,
             }),
         })
             .then(e => { return e.json() })
@@ -37,7 +37,12 @@ class HomePage extends Component {
 
         if (this.props.username === undefined) {
             console.log("reload");
-            this.props.history.push('/')
+            this.props.history.push('/');
+
+          //  localStorage.setItem('User', result.Token.owner)
+          //  this._signout(localStorage.getItem('User'))
+            localStorage.clear();
+
         }
       
     }
@@ -47,7 +52,7 @@ class HomePage extends Component {
         return (
             <div id="HomepageContainer">
                 
-                {/* <h4>homePage</h4>
+                 <h4>homePage</h4>
                 <button onClick={() => {
 
                     // this.props.signout();
@@ -55,7 +60,7 @@ class HomePage extends Component {
                     this.props.history.push('/')
 
 
-                }}>Signout</button> */} 
+                }}>Signout</button> 
                         <LiveUser socket={socket} />
         
                         <Chat socket={socket} />

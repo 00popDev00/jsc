@@ -21,6 +21,7 @@ var globalSocket;
 var TokenMaster = [];  //|| List of online Users
 var MasterDatabase = [];
 var UCD = [];//UsersCredentialDatabse
+var prevToken; //Previous Token
 
 app.post('/signup/', (req, res) => {
     //console.log(req.body)
@@ -48,7 +49,14 @@ app.post('/login', (req, res) => {
         _broadcastOnlineUser();
     }
 
-    res.send({ faith: faith, token: token })
+    if (token === -1) {
+        res.send({ faith: 404 })
+
+    }
+    else {
+        res.send({ faith: faith, token: token })
+
+    }
     // socket.emit('SigninACK', {faith:faith,Token:TokenMaster[faith]});
 
 })
@@ -81,7 +89,7 @@ app.post('/getDlist', (req, res) => {
 
     if (req.body.omd_id !== undefined) {
         var Dlists = _DlistsFinder(req.body.omd_id);
-        console.log("Dlists",Dlists);
+        console.log("Dlists", Dlists);
 
 
         res.send(Dlists);
@@ -104,11 +112,12 @@ io.on('connection', (socket) => {
     console.log(' globalSocket conneted', globalSocket.id)
 
     socket.on('messageSent', (data) => {
-        _updatedatabase(data);
+     let MD_id = _updatedatabase(data);
         var messagePacakge = {
             "message": data.message,
             "timestamp": data.timestamp,
             "owner": data.sender,
+            "MD_id": MD_id,
         }
         socket.broadcast.to(data.rusid).emit('message', messagePacakge);
         socket.emit('message', messagePacakge);
@@ -169,24 +178,49 @@ _signin = (data) => {
 
 _tokenManager = (data) => {
     var faith = TokenMaster.findIndex(e => { return e.owner === data });
-    if (faith === -1) {
-        let newToken = {
-            owner: data,
-            usid: globalSocket.id,
-            time: new Date(),
-            oMDlists: UCD[_oMDlistsFinder(data)].oMDlists,
 
-        }
+    let currentsocketid;
+    console.log('globalSocket.id:  ', globalSocket.id)
+    console.log('prevToken.id:  ', prevToken)
 
-        TokenMaster.push(newToken);
-        return newToken;
+    if (prevToken !== globalSocket.id) {
+        prevToken = globalSocket.id;
+        currentsocketid = globalSocket.id;
 
-        // console.log('\nToken Master:\n', TokenMaster, '\n')
     }
     else {
-        //already logged in
-        return TokenMaster[faith];
+
+        currentsocketid = 'same_id';
     }
+    console.log('after currentsocketid:  ', currentsocketid)
+
+    if (currentsocketid !== 'same_id') {
+        if (faith === -1) {
+            let newToken = {
+                owner: data,
+                usid: currentsocketid,
+                time: new Date(),
+                oMDlists: UCD[_oMDlistsFinder(data)].oMDlists,
+
+            }
+
+
+            TokenMaster.push(newToken);
+
+
+            return newToken;
+
+            // console.log('\nToken Master:\n', TokenMaster, '\n')
+        }
+        else {
+            //already logged in
+            return TokenMaster[faith];
+        }
+    }
+    else {
+        return -1;
+    }
+
 }
 
 _broadcastOnlineUser = () => {
@@ -235,16 +269,18 @@ _updatedatabase = (data) => {
 
         globalSocket.emit('updateoMDlist', UCD[sfaith].oMDlists);
         console.log(data.rusid)
-        globalSocket.to(data.rusid).emit('updateoMDlist', UCD[rfaith].oMDlists);
+        globalSocket.broadcast.to(data.rusid).emit('updateoMDlist', UCD[rfaith].oMDlists);
 
-        globalSocket.emit('newMDID', newID);
-        globalSocket.to(data.rusid).emit('newMDID', newID);
+        // globalSocket.emit('newMDID', newID);
+        // globalSocket.broadcast.to(data.rusid).emit('newMDID', newID);
 
+        return  MasterDatabase.length - 1;
 
     }
     else {
-console.log("data.MD_id",data.MD_id,"\n");
-        MasterDatabase[data.MD_id].Dlists.push(newEntry)
+        console.log("data.MD_id", data.MD_id, "\n");
+        MasterDatabase[data.MD_id].Dlists.push(newEntry);
+        return data.MD_id;
     }
 
 
@@ -257,7 +293,7 @@ console.log("data.MD_id",data.MD_id,"\n");
 
 _DlistsFinder = (credential) => {
 
-    console.log("credential",credential)
+    console.log("credential", credential)
     return MasterDatabase[credential].Dlists
 }
 

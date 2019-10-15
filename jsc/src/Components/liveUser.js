@@ -30,7 +30,7 @@ class LiveUser extends Component {
         })
             .then(e => { return e.json() })
             .then(result => {
-                console.log('Dlist result:', result, this.props.currentMD_id);
+                //  console.log('Dlist result:');
                 if (result.error === "NoChats") {
 
 
@@ -40,7 +40,7 @@ class LiveUser extends Component {
                     this.props.CurrentChats(result)
 
 
-                    //  console.log("currentchats",this.props.currentchats , "messageList",this.state.messageList)
+                    // console.log("currentchats",this.props.currentchats)
 
                 }
 
@@ -65,16 +65,16 @@ class LiveUser extends Component {
             // this.setState({ omd_id: data });
 
         })
-        this.props.socket.on('newMDID', (data) => {
-            let newToken = this.props.token
-            console.log("token", newToken)
-            console.log("newMDID", data)
+        // this.props.socket.on('newMDID', (data) => {
+        //     let newToken = this.props.token
+        //     console.log("token", newToken)
+        //     console.log("newMDID", data)
 
 
-            //    this.props.CurrentMDid(data.branch)
-            // this.setState({ omd_id: data });
+        //     //    this.props.CurrentMDid(data.branch)
+        //     // this.setState({ omd_id: data });
 
-        })
+        // })
 
 
 
@@ -84,7 +84,10 @@ class LiveUser extends Component {
         console.log("\n\n===================================")
         var faith = this.props.oMDlists.findIndex(e => { return e.shared === data.owner })
         if (faith === -1) {
-            console.log("error", data)
+            console.log("error", data);
+            this.props.CurrentChats([])
+
+            this.props.CurrentReciver(data);
         }
         else {
             // console.log("branch:", this.props.token[faith].branch)
@@ -92,11 +95,17 @@ class LiveUser extends Component {
             //  console.log("currentMD_id on select:", this.props.currentMD_id)
             this._getDatabase(this.props.oMDlists[faith].branch);
             //console.log("_getDatabase on select:", this.props.currentMD_id)
-
+            let x = setInterval(() => {
+                this.props.CurrentReciver(data);
+                console.log('idk0nonce', this.props.currentchats)
+    
+                if (this.props.currentchats !== undefined) { clearInterval(x) }
+    
+            }, 100)
 
         }
+     
 
-        this.props.CurrentReciver(data);
 
         console.log("===================================\n\n")
 

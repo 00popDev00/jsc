@@ -1,8 +1,9 @@
-|Index |todo     |  Description   |
-|------|---------|----------------|
-| 1 | for single login multiple signout | uncomment section in `componentdidmount()` in [Homepage.js](link)|
-
 # Future Todo
 |Index |todo     |  Description   |
 |------|---------|----------------|
-| 1 | for single login multiple signout | uncomment section in `componentdidmount()` in [Homepage.js](link)|
+| 1 | message handling while chatting | creating a module which manages notification |
+
+# Commmited
+|Index |commited     |  Description   |
+|------|---------|----------------|
+| 1 | real-time message reciving done | |
