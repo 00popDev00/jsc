@@ -91,13 +91,15 @@ export default (state = prestate, action) => {
 
         case 'oMDlists': return {...state,oMDlists:action.credential};
 
-        case 'Onlineusers': return {...state,onlineUser:action.credential};
+        case 'Onlineusers': OnlineusersManager(state,action.credential); return {...state,onlineUser:action.credential};
 
         case 'currentreciver': return {...state,currentreciver:action.credential};
         
         case 'currentMDid': return {...state,currentMD_id:action.credential};
 
         case 'currentchats': return {...state,currentchats:action.credential};
+
+        case 'signout': return {...state,username:undefined};
 
        // case 'listentoSignout': return listentoSignout();
        
@@ -111,24 +113,25 @@ export default (state = prestate, action) => {
 
 
 
+//   currentreciver: {
+//     owner: 'b',
+//     usid: 'mTa0jEbA_YRkD0D4AADI',
+//     time: '2019-10-05T09:07:02.365Z',
+//     oMDlists: []
+//   },
+const OnlineusersManager = (prestate,onlineUser) => {
+try{
+ var  updatestatus = onlineUser.findIndex(e=>{return e.owner ===  prestate.currentreciver.owner})
 
-const signout = (state, data) => {
-
-    // fetch('http://localhost:5000/signout/', {
-    //     headers: {
-    //         'Accept': 'application/json, text/plain, */*',
-    //         'Content-Type': 'application/json'
-    //     },
-    //     method: 'post',
-    //     body: JSON.stringify({
-    //         'userid': data,
-    //     }),
-    // })
-    //     .then(e => { return e.json() })
-    //     .then(data => {
-    //         console.log('status:', data);
-    //     })
-    //     .catch(error => console.error(error))
+   if(updatestatus !== -1){
+    prestate.currentreciver.usid = onlineUser[updatestatus].usid;
+   }
+}
+catch(e)
+{
+    console.log('\n OnlibeusersManager: ',e);
+}
+  
 }
 
 const listentoSignout = () => {

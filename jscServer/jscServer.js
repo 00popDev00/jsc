@@ -112,15 +112,19 @@ io.on('connection', (socket) => {
     console.log(' globalSocket conneted', globalSocket.id)
 
     socket.on('messageSent', (data) => {
-     let MD_id = _updatedatabase(data);
+        let MD_id = _updatedatabase(data);
         var messagePacakge = {
             "message": data.message,
             "timestamp": data.timestamp,
             "owner": data.sender,
             "MD_id": MD_id,
         }
+
         socket.broadcast.to(data.rusid).emit('message', messagePacakge);
+        console.log('reciver = ', data.rusid)
         socket.emit('message', messagePacakge);
+        console.log('sender = ', socket.id)
+
 
 
     })
@@ -153,12 +157,12 @@ _signup = (data) => {
         }
 
         UCD.push(newUser);
-        console.log('New User |', data.userid, '|  Signed Up! ')
+        //  console.log('New User |', data.userid, '|  Signed Up! ')
         return 1;
 
     }
     else {
-        console.log('Already a User! ')
+        //  console.log('Already a User! ')
         return 0;
 
     }
@@ -180,8 +184,8 @@ _tokenManager = (data) => {
     var faith = TokenMaster.findIndex(e => { return e.owner === data });
 
     let currentsocketid;
-    console.log('globalSocket.id:  ', globalSocket.id)
-    console.log('prevToken.id:  ', prevToken)
+    //  console.log('globalSocket.id:  ', globalSocket.id)
+    //  console.log('prevToken.id:  ', prevToken)
 
     if (prevToken !== globalSocket.id) {
         prevToken = globalSocket.id;
@@ -192,7 +196,7 @@ _tokenManager = (data) => {
 
         currentsocketid = 'same_id';
     }
-    console.log('after currentsocketid:  ', currentsocketid)
+    ///   console.log('after currentsocketid:  ', currentsocketid)
 
     if (currentsocketid !== 'same_id') {
         if (faith === -1) {
@@ -268,17 +272,17 @@ _updatedatabase = (data) => {
         UCD[rfaith].oMDlists.push(newID)
 
         globalSocket.emit('updateoMDlist', UCD[sfaith].oMDlists);
-        console.log(data.rusid)
+        //   console.log(data.rusid)
         globalSocket.broadcast.to(data.rusid).emit('updateoMDlist', UCD[rfaith].oMDlists);
 
-        // globalSocket.emit('newMDID', newID);
-        // globalSocket.broadcast.to(data.rusid).emit('newMDID', newID);
+        globalSocket.emit('newMDID', newID);
+        globalSocket.broadcast.to(data.rusid).emit('newMDID', newID);
 
-        return  MasterDatabase.length - 1;
+        return MasterDatabase.length - 1;
 
     }
     else {
-        console.log("data.MD_id", data.MD_id, "\n");
+        //  console.log("data.MD_id", data.MD_id, "\n");
         MasterDatabase[data.MD_id].Dlists.push(newEntry);
         return data.MD_id;
     }

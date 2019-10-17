@@ -13,7 +13,7 @@ class HomePage extends Component {
 
     state = {}
 
-    _signout = (user=this.props.username) => {
+    _signout = (user = this.props.username) => {
         fetch('http://localhost:5000/signout/', {
             headers: {
                 'Accept': 'application/json, text/plain, */*',
@@ -39,20 +39,37 @@ class HomePage extends Component {
             console.log("reload");
             this.props.history.push('/');
 
-          //  localStorage.setItem('User', result.Token.owner)
-          //  this._signout(localStorage.getItem('User'))
+            //  localStorage.setItem('User', result.Token.owner)
+            //  this._signout(localStorage.getItem('User'))
             localStorage.clear();
 
         }
-      
+
+
+
     }
+    componentDidUpdate() {
+        if (this.props.username === undefined) {
+            console.log("reload");
+            this.props.history.push('/');
+
+            //  localStorage.setItem('User', result.Token.owner)
+            //  this._signout(localStorage.getItem('User'))
+            localStorage.clear();
+
+        }
+    }
+
+
+
+
     render() {
         //      console.log('username Homepage=>', this.props.username)
 
         return (
             <div id="HomepageContainer">
-                
-                 <h4>homePage</h4>
+
+                {/* <h4>homePage</h4>
                 <button onClick={() => {
 
                     // this.props.signout();
@@ -60,11 +77,12 @@ class HomePage extends Component {
                     this.props.history.push('/')
 
 
-                }}>Signout</button> 
-                        <LiveUser socket={socket} />
-        
-                        <Chat socket={socket} />
-                    
+                }}>Signout</button> */}
+
+                <LiveUser socket={socket} />
+
+                <Chat socket={socket} />
+
 
             </div>
         );
@@ -76,6 +94,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
     Username: (credential) => dispatch(Action.Username(credential)),
+    CurrentChats: (credential) => dispatch(Action.CurrentChats(credential)),
+
 
 
 

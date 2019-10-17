@@ -16,6 +16,33 @@ class LiveUser extends Component {
     //     //     this.setState({onlineUser: this.props.onlineUser})
     //     // }
     // }
+
+
+    _signout = (user = this.props.username) => {
+        fetch('http://localhost:5000/signout/', {
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            method: 'post',
+            body: JSON.stringify({
+                'userid': user,
+            }),
+        })
+            .then(e => { return e.json() })
+            .then(data => {
+                console.log('status:', data);
+                localStorage.clear();
+
+                
+
+
+            })
+            .catch(error => console.error(error))
+
+            this.props.Signout();
+    }
+
     _getDatabase = (branch) => {
 
         fetch('http://localhost:5000/getDlist/', {
@@ -65,16 +92,16 @@ class LiveUser extends Component {
             // this.setState({ omd_id: data });
 
         })
-        // this.props.socket.on('newMDID', (data) => {
-        //     let newToken = this.props.token
-        //     console.log("token", newToken)
-        //     console.log("newMDID", data)
+        this.props.socket.on('newMDID', (data) => {
+            let newToken = this.props.token
+            console.log("token", newToken)
+            console.log("newMDID", data)
 
 
-        //     //    this.props.CurrentMDid(data.branch)
-        //     // this.setState({ omd_id: data });
+            //    this.props.CurrentMDid(data.branch)
+            // this.setState({ omd_id: data });
 
-        // })
+        })
 
 
 
@@ -119,7 +146,7 @@ class LiveUser extends Component {
                 <div id="UserProfileTab">
                     <div id="UserAvtar_Div">
                         <Avatar size={64} icon="user"
-                            onClick={() => alert('Avtar_Div')}
+                            onClick={() => this._signout()}
                         />
                     </div>
                     <div id="UserContent_Div">
@@ -179,7 +206,9 @@ const mapDispatchToProps = dispatch => ({
     CurrentMDid: (credential) => dispatch(Action.CurrentMDid(credential)),
     OMDlists: (credential) => dispatch(Action.OMDlists(credential)),
     CurrentChats: (credential) => dispatch(Action.CurrentChats(credential)),
+    Signout: () => dispatch(Action.Signout()),
 
+    
 
 
 

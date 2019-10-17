@@ -40,6 +40,12 @@ module.exports = {
       credential
     }
   },
+  Signout: () => {
+    return {
+      type: "signout",
+      
+    }
+  },
 
   
   
