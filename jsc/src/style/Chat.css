@@ -1,7 +1,7 @@
 #ChatContainer {
     display: flex;
     flex: 7;
-    background: url('../Images/Wallpaper.png') no-repeat center center fixed;
+    /* background: url('../Images/Wallpaper.png') no-repeat center center fixed; */
     flex-direction: column;
     
 }

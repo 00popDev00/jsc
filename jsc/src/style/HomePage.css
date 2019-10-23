@@ -4,6 +4,8 @@
     min-height: 100vh;
     /* background: #AA3466; */
     border: none;
+    background: #275786;
+
 
 }
 
@@ -14,7 +16,7 @@
 div{
 
     display: flex;
-    /* border: 1px solid red; */
+    border: 1px solid red;
     height: 100%;
     width: 100%;
     

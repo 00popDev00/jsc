@@ -144,6 +144,8 @@ class LiveUser extends Component {
         return (
             <div id="LiveuserContainer">
                 <div id="UserProfileTab">
+                <div id="UserProfilePlate">
+
                     <div id="UserAvtar_Div">
                         <Avatar size={64} icon="user"
                             onClick={() => this._signout()}
@@ -152,8 +154,11 @@ class LiveUser extends Component {
                     <div id="UserContent_Div">
                         data
                     </div>
+                    </div>
+
                 </div>
                 <div id="OnlineUsersContainer">
+                <div id="OnlineUsersPlate">
 
 
                     {this.props.onlineUser.map((e, index) => (
@@ -182,11 +187,14 @@ class LiveUser extends Component {
 
 
                             </div>
+                            
 
 
                             : null
 
                     ))}
+
+                    </div>
                 </div>
 
 
