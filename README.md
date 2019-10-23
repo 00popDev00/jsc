@@ -5,6 +5,6 @@
 
 # Commmited
 |Index |commited     |  Description   | Date |
-|------|---------|----------------|
+|------|---------|----------------|----------|
 | 1 | real-time message reciving done | | |
 | 2 | message handling while chatting | creating a module which manages notification |17th october |
