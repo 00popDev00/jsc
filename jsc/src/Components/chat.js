@@ -131,37 +131,59 @@ class Chat extends Component {
 
 
                     <div id="ReciverHeader">
-                        <div id="UserAvtar_Div">
-                            <Avatar size={60} icon="user"
-                                onClick={() => alert('Avtar_Info')}
-                            />
-                        </div>
-                        <div id="ReciverName">
+                        <div id="ReciverHeaderPlate">
 
-                            <h5> {this.props.currentreciver === undefined ? 'no user' : this.props.currentreciver.owner}</h5>
+                            <div id="UserAvtar_Div">
+                                <Avatar size={60} icon="user"
+                                    onClick={() => alert('Avtar_Info')}
+                                />
+                            </div>
+                            <div id="ReciverName">
+
+                                <h5> {this.props.currentreciver === undefined ? 'no user' : this.props.currentreciver.owner}</h5>
+                            </div>
+                            <Icon type="setting" theme="twoTone" />
                         </div>
-                        <Icon type="setting" theme="twoTone" />
 
                     </div>
                     <div id="ChatArea">
-                        {this.props.currentchats !== undefined ?
-                            this.props.currentchats.length > 0 ? this.props.currentchats.map((e, index) => (
+                        <div id="ChatAreaPlate">
 
-                                <div id="ChatBubble" key={index}>
-                                    <div id="Message"> {e.message}</div>
-                                    <div id="Timestamp"> {e.timestamp}</div>
+                            {this.props.currentchats !== undefined ?
+                                this.props.currentchats.length > 0 ? this.props.currentchats.map((e, index) => (
 
-                                </div>
-                            )) : null
+                                    e.owner === this.props.username ?
+                                        <div id="BubblePlateOwner">
+
+                                            <div id="ChatBubbleOwner" key={index} >
+                                                <div id="Message"> {e.message}</div>
+                                                <div id="Timestamp"> {e.timestamp}</div>
+
+                                            </div>
+                                        </div>
+
+                                        :
+                                        <div id="BubblePlate">
+
+                                            <div id="ChatBubble" key={index}>
+                                                <div id="Message"> {e.message}</div>
+                                                <div id="Timestamp"> {e.timestamp}</div>
+
+                                            </div>
+                                        </div>
+
+
+                                )) : null
 
 
 
-                            : null}
+                                : null}
 
+                        </div>
 
                     </div>
                     <div id="SendContainer">
-                        <input id="InputSend" type='text' placeholder="type..." onChange={(e) => { this.setState({ message: e.target.value }) }}  ></input>
+                        <input id="InputSend" type='text' value={this.state.message} placeholder="type..." onChange={(e) => { this.setState({ message: e.target.value }) }}  ></input>
                         <button id="ButtonSend" onClick={() => { this._send() }}>send</button>
                     </div>
 
