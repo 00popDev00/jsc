@@ -14,9 +14,9 @@ module.exports = {
     }
   },
 
-  Token: (credential) => {
+  OMDlists: (credential) => {
     return {
-      type: "Token",
+      type: "oMDlists",
       credential
     }
   },
@@ -27,6 +27,27 @@ module.exports = {
       credential
     }
   },
+  CurrentMDid: (credential) => {
+    return {
+      type: "currentMDid",
+      credential
+    }
+  },
+
+  CurrentChats: (credential) => {
+    return {
+      type: "currentchats",
+      credential
+    }
+  },
+  Signout: () => {
+    return {
+      type: "signout",
+      
+    }
+  },
+
+  
   
   
 

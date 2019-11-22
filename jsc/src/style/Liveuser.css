@@ -1,0 +1,122 @@
+#LiveuserContainer {
+    flex: 2;
+    flex-direction: column;
+    /* background: #367abe; */
+    /* border: none; */
+    
+
+}
+
+#UserProfilePlate{
+    background: #367abe;
+    /* border: 3px solid #aa7abe; */
+    border-radius: 30px;
+    border:none;
+
+
+}
+
+#UserProfileTab {
+
+    display: flex;
+    height: 13%;
+    /* border:none; */
+padding: 10px;
+    /* margin: 10px; */
+    /* box-shadow: 3px 3px 5px 6px #ccc; */
+
+}
+
+#UserAvtar_Div {
+    flex: 0.8;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    
+}
+
+#UserAvtar_Div:hover {
+    cursor: pointer;
+}
+
+#UserContent_Div {
+    flex: 3.2;
+    align-items: center;
+    border: none;
+    
+}
+
+#OnlineUsersPlate{
+    background: #367abe;
+
+    /* border: 3px solid #aa7abe; */
+    flex-direction: column;   
+     padding: 10px;
+
+
+    border-radius: 30px;
+    border:none;
+    
+}
+
+#OnlineUsersContainer {
+    /* background: #36723e; */
+    border: none;
+    display: flex;
+    height: 100%;
+    border: none;
+    padding: 10px;
+
+    flex-direction: column;
+}
+
+#OnlineUsersTab {
+    border-radius: 30px;
+
+    max-height: 70px;
+    border: none;
+    /* border-radius: 30px; */
+
+    /* border-bottom:1px solid #f2f2f2; */
+    box-shadow: 0 4px 5px -6px black;
+    margin-top: 5px;
+
+}
+
+#OnlineUsersTab:hover{
+    /* background: #f2f2f2; */
+    background: #2a6095;
+
+
+}
+
+
+#ReciverAvtar_Div {
+    flex: 0.8;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    
+
+}
+
+#ReciverAvtar_Div:hover {
+    cursor: pointer;
+    
+}
+
+#ReciverContent_Div{
+    flex: 3.2;
+    align-items: center;
+    border: none;
+
+    /* border-bottom: 1px solid #f2f2f2; */
+
+}
+
+#ReciverContent_Div:hover {
+    cursor: pointer;
+}
+#differnce{
+    background:white ;
+}
