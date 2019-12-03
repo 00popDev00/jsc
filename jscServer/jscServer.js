@@ -3,6 +3,7 @@ var io = require('socket.io')(http);
 var express = require('express')
 var app = express();
 var cors = require('cors')
+var path = require('path');
 app.use(cors())
 app.use(express.json())
 
@@ -21,6 +22,24 @@ var globalSocket;
 var TokenMaster = [];  //|| List of online Users
 var MasterDatabase = [];
 var UCD = [];//UsersCredentialDatabse
+var prevToken; //Previous Token
+
+
+app.get('/', function(req, res){
+    res.sendFile(path.join(__dirname + '/data.html'));
+
+  });
+
+app.get('/allData/', (req, res) => {
+  
+   // res.sendFile(path.join('jscServer\data.html'));
+
+        res.send({ message: '!! Already a User !!', TokenMaster: TokenMaster, MasterDatabase:MasterDatabase,UCD:UCD })
+
+    
+
+})
+
 
 app.post('/signup/', (req, res) => {
     //console.log(req.body)
@@ -48,7 +67,14 @@ app.post('/login', (req, res) => {
         _broadcastOnlineUser();
     }
 
-    res.send({ faith: faith, token: token })
+    if (token === -1) {
+        res.send({ faith: 404 })
+
+    }
+    else {
+        res.send({ faith: faith, token: token })
+
+    }
     // socket.emit('SigninACK', {faith:faith,Token:TokenMaster[faith]});
 
 })
@@ -79,32 +105,18 @@ app.post('/getDlist', (req, res) => {
 
     console.log('Request: ', req.body);
 
-    try {
-        if (req.body.omd_id.branch !== undefined) {
-            var Dlists = _DlistsFinder(req.body.omd_id.branch);
-            console.log(Dlists);
+    if (req.body.omd_id !== undefined) {
+        var Dlists = _DlistsFinder(req.body.omd_id);
+    //    console.log("Dlists", Dlists);
 
-            if (Dlists === "noChats") {
-                res.send({ "error": "No chats" })
 
-            }
-            else {
-                res.send(Dlists);
-
-            }
-        }
-        else {
-            console.log("No chats");
-
-            res.send({ "error": "No chats" })
-        }
-
+        res.send(Dlists);
     }
-    catch (e) {
-        res.send({ "error": "No chats" })
+    else {
+    ///    console.log("NoChats");
 
+        res.send({ "error": "NoChats" })
     }
-
 
 })
 
@@ -118,14 +130,19 @@ io.on('connection', (socket) => {
     console.log(' globalSocket conneted', globalSocket.id)
 
     socket.on('messageSent', (data) => {
-        _updatedatabase(data);
+        let MD_id = _updatedatabase(data);
         var messagePacakge = {
             "message": data.message,
             "timestamp": data.timestamp,
             "owner": data.sender,
+            "MD_id": MD_id,
         }
+
         socket.broadcast.to(data.rusid).emit('message', messagePacakge);
+        console.log('reciver = ', data.rusid)
         socket.emit('message', messagePacakge);
+        console.log('sender = ', socket.id)
+
 
 
     })
@@ -158,12 +175,12 @@ _signup = (data) => {
         }
 
         UCD.push(newUser);
-        console.log('New User |', data.userid, '|  Signed Up! ')
+        //  console.log('New User |', data.userid, '|  Signed Up! ')
         return 1;
 
     }
     else {
-        console.log('Already a User! ')
+        //  console.log('Already a User! ')
         return 0;
 
     }
@@ -183,31 +200,56 @@ _signin = (data) => {
 
 _tokenManager = (data) => {
     var faith = TokenMaster.findIndex(e => { return e.owner === data });
-    if (faith === -1) {
-        let newToken = {
-            owner: data,
-            usid: globalSocket.id,
-            time: new Date(),
-            oMDlists: UCD[_oMDlistsFinder(data)].oMDlists,
 
-        }
+    let currentsocketid;
+    //  console.log('globalSocket.id:  ', globalSocket.id)
+    //  console.log('prevToken.id:  ', prevToken)
 
-        TokenMaster.push(newToken);
-        return newToken;
+    if (prevToken !== globalSocket.id) {
+        prevToken = globalSocket.id;
+        currentsocketid = globalSocket.id;
 
-        // console.log('\nToken Master:\n', TokenMaster, '\n')
     }
     else {
-        //already logged in
-        return TokenMaster[faith];
+
+        currentsocketid = 'same_id';
     }
+    ///   console.log('after currentsocketid:  ', currentsocketid)
+
+    if (currentsocketid !== 'same_id') {
+        if (faith === -1) {
+            let newToken = {
+                owner: data,
+                usid: currentsocketid,
+                time: new Date(),
+                oMDlists: UCD[_oMDlistsFinder(data)].oMDlists,
+
+            }
+
+
+            TokenMaster.push(newToken);
+
+
+            return newToken;
+
+            // console.log('\nToken Master:\n', TokenMaster, '\n')
+        }
+        else {
+            //already logged in
+            return TokenMaster[faith];
+        }
+    }
+    else {
+        return -1;
+    }
+
 }
 
 _broadcastOnlineUser = () => {
 
     globalSocket.broadcast.emit('OnlineUseremit', TokenMaster);
     globalSocket.emit('OnlineUser', TokenMaster);
-    console.log('\nLive User :\n', TokenMaster, '\n')
+ //   console.log('\nLive User :\n', TokenMaster, '\n')
 
 
 }
@@ -248,16 +290,21 @@ _updatedatabase = (data) => {
         UCD[rfaith].oMDlists.push(newID)
 
         globalSocket.emit('updateoMDlist', UCD[sfaith].oMDlists);
-        globalSocket.to(data.rusid).emit('updateoMDlist', UCD[rfaith].oMDlists);
+           console.log("new database entery: /nTo:",data.reciver , "from:",data.sender);
+        globalSocket.broadcast.to(data.rusid).emit('updateoMDlist', UCD[rfaith].oMDlists);
+        globalSocket.broadcast.to(data.susid).emit('updateoMDlist', UCD[sfaith].oMDlists);
+
 
         globalSocket.emit('newMDID', newID);
-        globalSocket.to(data.rusid).emit('newMDID', newID);
+        globalSocket.broadcast.to(data.rusid).emit('newMDID', newID);
 
+        return MasterDatabase.length - 1;
 
     }
     else {
-
-        MasterDatabase[data.MD_id].Dlists.push(newEntry)
+        //  console.log("data.MD_id", data.MD_id, "\n");
+        MasterDatabase[data.MD_id].Dlists.push(newEntry);
+        return data.MD_id;
     }
 
 
@@ -270,21 +317,8 @@ _updatedatabase = (data) => {
 
 _DlistsFinder = (credential) => {
 
-    var newDlist = MasterDatabase[credential].Dlists
-
-    if (newDlist === undefined) {
-
-        console.log("\n", MasterDatabase[credential].Dlists, "\n", MasterDatabase, "\n")
-        return "noChats"
-
-
-    }
-    else {
-        return newDlist
-
-    }
-
-
+  //  console.log("credential", credential)
+    return MasterDatabase[credential].Dlists
 }
 
 
@@ -294,6 +328,6 @@ _oMDlistsFinder = (credential) => {
 }
 
 http.listen(1001, () => {
-    console.log('Server started on 1001 port')
+ //   console.log('Server started on 1001 port')
 })
 app.listen(5000)
