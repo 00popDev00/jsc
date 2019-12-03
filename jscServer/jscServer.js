@@ -3,6 +3,7 @@ var io = require('socket.io')(http);
 var express = require('express')
 var app = express();
 var cors = require('cors')
+var path = require('path');
 app.use(cors())
 app.use(express.json())
 
@@ -22,6 +23,23 @@ var TokenMaster = [];  //|| List of online Users
 var MasterDatabase = [];
 var UCD = [];//UsersCredentialDatabse
 var prevToken; //Previous Token
+
+
+app.get('/', function(req, res){
+    res.sendFile(path.join(__dirname + '/data.html'));
+
+  });
+
+app.get('/allData/', (req, res) => {
+  
+   // res.sendFile(path.join('jscServer\data.html'));
+
+        res.send({ message: '!! Already a User !!', TokenMaster: TokenMaster, MasterDatabase:MasterDatabase,UCD:UCD })
+
+    
+
+})
+
 
 app.post('/signup/', (req, res) => {
     //console.log(req.body)
@@ -89,13 +107,13 @@ app.post('/getDlist', (req, res) => {
 
     if (req.body.omd_id !== undefined) {
         var Dlists = _DlistsFinder(req.body.omd_id);
-        console.log("Dlists", Dlists);
+    //    console.log("Dlists", Dlists);
 
 
         res.send(Dlists);
     }
     else {
-        console.log("NoChats");
+    ///    console.log("NoChats");
 
         res.send({ "error": "NoChats" })
     }
@@ -231,7 +249,7 @@ _broadcastOnlineUser = () => {
 
     globalSocket.broadcast.emit('OnlineUseremit', TokenMaster);
     globalSocket.emit('OnlineUser', TokenMaster);
-    console.log('\nLive User :\n', TokenMaster, '\n')
+ //   console.log('\nLive User :\n', TokenMaster, '\n')
 
 
 }
@@ -272,8 +290,10 @@ _updatedatabase = (data) => {
         UCD[rfaith].oMDlists.push(newID)
 
         globalSocket.emit('updateoMDlist', UCD[sfaith].oMDlists);
-        //   console.log(data.rusid)
+           console.log("new database entery: /nTo:",data.reciver , "from:",data.sender);
         globalSocket.broadcast.to(data.rusid).emit('updateoMDlist', UCD[rfaith].oMDlists);
+        globalSocket.broadcast.to(data.susid).emit('updateoMDlist', UCD[sfaith].oMDlists);
+
 
         globalSocket.emit('newMDID', newID);
         globalSocket.broadcast.to(data.rusid).emit('newMDID', newID);
@@ -297,7 +317,7 @@ _updatedatabase = (data) => {
 
 _DlistsFinder = (credential) => {
 
-    console.log("credential", credential)
+  //  console.log("credential", credential)
     return MasterDatabase[credential].Dlists
 }
 
@@ -308,6 +328,6 @@ _oMDlistsFinder = (credential) => {
 }
 
 http.listen(1001, () => {
-    console.log('Server started on 1001 port')
+ //   console.log('Server started on 1001 port')
 })
 app.listen(5000)

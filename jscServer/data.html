@@ -1,0 +1,94 @@
+<html>
+    <head>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    </head>
+    <body>
+
+        <h5>hi!</h5>
+        <table id="tokenmaster" >
+<tr>
+  <td>
+   Token Master
+  </td>
+</tr>
+        </table>
+
+
+        <script>
+$(document).ready(function(){
+
+var GLobalData;
+
+ var fetch =   $.get("http://localhost:5000/allData", function(data, status){ 
+  console.log(data.TokenMaster[0])
+return  data; 
+
+});
+    
+/* 
+ let newToken = {
+                owner: data,
+                usid: currentsocketid,
+                time: new Date(),
+                oMDlists: UCD[_oMDlistsFinder(data)].oMDlists,
+
+            }
+
+
+            TokenMaster.push(newToken);
+*/
+
+
+var DisplayTokenMaster = document.getElementById('tokenmaster')
+    var row = document.createElement("tr");
+    row.setAttribute('style','display: grid');
+
+   console.log(GLobalData);
+fetch.then(d=>{
+ //   console.log(d.TokenMaster[1])
+  d.TokenMaster.forEach(element => { 
+    var cellMain = document.createElement("tr");
+
+    var cell = document.createElement("td");
+  cell.appendChild(document.createTextNode("Owner : " + element.owner ));
+  cell.appendChild(document.createTextNode("usid : " + element.usid ));
+  cell.appendChild(document.createTextNode("time : " + element.time ));
+
+  
+  var celloMDlists = document.createElement("td");
+
+
+  element.oMDlists.forEach(e=> {
+    celloMDlists.appendChild(document.createTextNode("branch : " + e.branch ));
+    celloMDlists.appendChild(document.createTextNode("shared with : " + e.shared ));
+    celloMDlists.appendChild(document.createTextNode('\t || \t'));
+
+  })
+
+
+  //celloMDlists.appendChild(document.createTextNode("oMDlists : " + element.oMDlists ));
+
+  
+
+  cellMain.appendChild(cell);
+  cellMain.appendChild(celloMDlists);
+  cellMain.setAttribute('style',"display: grid;padding-bottom: 1em;");
+
+  row.appendChild(cellMain)
+
+});
+
+  DisplayTokenMaster.appendChild(row);
+
+})
+
+
+
+      
+});
+
+          </script>  
+
+</body>
+</html>
