@@ -1,0 +1,23 @@
+#HomepageContainer{
+    display: flex;
+    flex-direction: 'row';
+    min-height: 100vh;
+    /* background: #AA3466; */
+    border: none;
+    background: #275786;
+
+
+}
+
+
+/* Testing Mode */
+    /* cursor:grab/pointer; */
+
+div{
+
+    display: flex;
+    /* border: 1px solid red; */
+    height: 100%;
+    width: 100%;
+    
+}

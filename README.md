@@ -1,21 +1,29 @@
-### Status: Stage One [Completed ]
-## Completed a basic chat module. [work on design is going on]
+# Future Todo
+##### arranged in priority order and index is serial add.
 
-
-### Stage Two
-#### Upcoming Todo
 |Index |todo     |  Description   |
 |------|---------|----------------|
-| 1 | create signup form |  |
-| 2 | Group chat | create a group caht module via "room" in socket.io |
-| 3 | Connection with mongodb |  |
+| 3 | global message listner  |  Create "messgae' socket in "homepage" to listen to all and update to notification manager. |
+| 4 | Notification Manager  |  Create Module for Notification Manager   |
+| 1 | proper logout | if not logged out properly app has glitches. (real-time message dont work.) |
+| 2 | responsive website |  use bootsrap or other components. |
 
 
-### Stage Three
 
-#### Upcoming Todo
-|Index |todo     |  Description   |
-|------|---------|----------------|
-| 1 | Work in security stability | File encyption and trafffic managment |
-| 2 | Social meadia SignIN | Facebook, and gmail |
-| 3 | Session Managment |  |
+
+# Commmited
+|Index |commited     |  Description   | Date |
+|------|---------|----------------|----------|
+| 1 | real-time message reciving done | | |
+| 2 | message handling while chatting | creating a module which manages notification |17th october |
+| 3 | basic design is build | a simple base is ready |24th october |
+
+
+
+
+## Helpful Links
+https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius
+
+https://www.sessions.edu/color-calculator/
+
+https://leaverou.github.io/bubbly/

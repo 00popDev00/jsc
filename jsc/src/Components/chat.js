@@ -1,14 +1,30 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import Action from "../Redux/action";
+import '../style/Chat.css'
+import { Avatar, Icon, Menu, Dropdown, Button } from 'antd';
+
 //import ClientSocket from 'socket.io-client';
 
 //var socket = ClientSocket("http://localhost:1001/");
+const menu = (
+    <Menu>
+        <Menu.Item>
+            1st menu item
+      </Menu.Item>
+        <Menu.Item>
+            2nd menu item
+      </Menu.Item>
+        <Menu.Item>
+            3rd menu item
+      </Menu.Item>
+    </Menu>
+);
 
 class Chat extends Component {
     state = {
         onlineUser: [],
-        messageList: this.props.currentchats,
+        messageList: [],
         message: undefined,
         omd_id: undefined,
 
@@ -23,27 +39,30 @@ class Chat extends Component {
                 message: undefined,
 
             });
-            this.props.CurrentChats([])
+            console.log('idk')
+            // this.props.CurrentChats([])
         }
         else {
-            this.setState({
-                onlineUser: [],
-                messageList: this.props.currentchats,
-                message: undefined,
+            // console.log('idk',this.props.currentchats)
 
-            });
+            // this.setState({
+            //     messageList: this.props.currentchats === undefined? [] :this.props.currentchats ,
+            //     message: '',
+
+            // });
+
         }
 
 
-
-        //  this._getDatabase();
     }
 
+    // componentWillUpdate() {
+
+    // }
 
     componentWillUnmount() {
 
         this.setState({
-            onlineUser: [],
             messageList: [],
             message: undefined,
 
@@ -66,13 +85,20 @@ class Chat extends Component {
 
 
         this.props.socket.on('message', (data) => {
-            var ml = this.state.messageList;
+            console.log("data from send", data)
 
-            //  console.log("ml", ml, "data", data)
+            var ml = this.props.currentchats;
+
 
             ml.push(data);
             this.props.CurrentChats(ml)
-            this.setState({ messageList: ml });
+            console.log('---=>', this.props.currentchats)
+            this.setState({});
+
+            if (this.props.currentMD_id === undefined) {
+                this.props.CurrentMDid(data.MD_id);
+            }
+
 
         })
     }
@@ -89,6 +115,7 @@ class Chat extends Component {
 
 
         this.props.socket.emit('messageSent', sendPackage);
+        this.setState({ message: '' })
     }
 
     render() {
@@ -96,24 +123,76 @@ class Chat extends Component {
         //     "timestamp": data.timestamp,
         //     "owner":data.sender, 
         return (
-            <div>
 
-                <div><h5>Talking to: {this.props.currentreciver === undefined ? 'no user' : this.props.currentreciver.usid}</h5></div>
-                <div>
-                    {this.state.messageList.length > 0 ? this.state.messageList.map((e, index) => (
+            this.props.currentreciver !== undefined ?
 
-                        <li key={index}> <h4>{e.owner}</h4><p>{e.message} <b> {e.timestamp}</b></p></li>
-                    )) : null}
-                </div>
 
-                <div>
-                    <div style={{ display: 'flex', flex: 1, flexDirection: 'row' }}>
-                        <input type='text' placeholder="type..." onChange={(e) => { this.setState({ message: e.target.value }) }}  ></input>
-                        <button onClick={() => { this._send() }}>send</button>
+                <div id="ChatContainer">
+
+
+                    <div id="ReciverHeader">
+                        <div id="ReciverHeaderPlate">
+
+                            <div id="UserAvtar_Div">
+                                <Avatar size={60} icon="user"
+                                    onClick={() => alert('Avtar_Info')}
+                                />
+                            </div>
+                            <div id="ReciverName">
+
+                                <h5> {this.props.currentreciver === undefined ? 'no user' : this.props.currentreciver.owner}</h5>
+                            </div>
+                            <Icon type="setting" theme="twoTone" />
+                        </div>
+
+                    </div>
+                    <div id="ChatArea">
+                        <div id="ChatAreaPlate">
+
+                            {this.props.currentchats !== undefined ?
+                                this.props.currentchats.length > 0 ? this.props.currentchats.map((e, index) => (
+
+                                    e.owner === this.props.username ?
+                                        <div id="BubblePlateOwner">
+
+                                            <div id="ChatBubbleOwner" key={index} >
+                                                <div id="Message"> {e.message}</div>
+                                                <div id="Timestamp"> {e.timestamp}</div>
+
+                                            </div>
+                                        </div>
+
+                                        :
+                                        <div id="BubblePlate">
+
+                                            <div id="ChatBubble" key={index}>
+                                                <div id="Message"> {e.message}</div>
+                                                <div id="Timestamp"> {e.timestamp}</div>
+
+                                            </div>
+                                        </div>
+
+
+                                )) : null
+
+
+
+                                : null}
+
+                        </div>
+
+                    </div>
+                    <div id="SendContainer">
+                        <input id="InputSend" type='text' value={this.state.message} placeholder="type..." onChange={(e) => { this.setState({ message: e.target.value }) }}  ></input>
+                        <button id="ButtonSend" onClick={() => { this._send() }}>send</button>
                     </div>
 
+
                 </div>
-            </div>
+
+                :
+                <div id="ChatContainer">
+                </div>
         );
     }
 }
@@ -124,6 +203,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
     CurrentChats: (credential) => dispatch(Action.CurrentChats(credential)),
+    CurrentMDid: (credential) => dispatch(Action.CurrentMDid(credential)),
 
     // Onlineusers: (credential) => dispatch(Action.Onlineusers(credential)),
     //CurrentReciver: (credential) => dispatch(Action.CurrentReciver(credential))
