@@ -39,7 +39,6 @@ class Chat extends Component {
                 message: undefined,
 
             });
-            console.log('idk')
             // this.props.CurrentChats([])
         }
         else {
@@ -92,11 +91,18 @@ class Chat extends Component {
 
             ml.push(data);
             this.props.CurrentChats(ml)
-            console.log('---=>', this.props.currentchats)
+           // console.log('---=>', this.props.socket.id)
             this.setState({});
 
             if (this.props.currentMD_id === undefined) {
-                this.props.CurrentMDid(data.MD_id);
+               // this.props.CurrentMDid(data.MD_id);
+                if(this.props.currentreciver != undefined)
+                {
+                    var faith = this.props.oMDlists.findIndex(e => { return e.shared === this.props.currentreciver.owner })
+                    console.log('faith:',faith);
+                    this.props.CurrentMDid(this.props.oMDlists[faith].branch)
+                }
+                
             }
 
 
@@ -106,6 +112,7 @@ class Chat extends Component {
     _send = () => {
         var sendPackage = {
             "rusid": this.props.currentreciver.usid,
+            "susid": this.props.socket.id,
             "message": this.state.message,
             "sender": this.props.username,
             "reciver": this.props.currentreciver.owner,

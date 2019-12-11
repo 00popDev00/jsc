@@ -120,7 +120,9 @@ io.on('connection', (socket) => {
             "MD_id": MD_id,
         }
 
-        socket.broadcast.to(data.rusid).emit('message', messagePacakge);
+        // socket.broadcast.to(data.rusid).emit('message', messagePacakge);
+         io.to(data.rusid).emit('message', messagePacakge);
+
         console.log('reciver = ', data.rusid)
         socket.emit('message', messagePacakge);
         console.log('sender = ', socket.id)
@@ -134,6 +136,7 @@ io.on('connection', (socket) => {
 
         socket.emit('getLiveUsersACK', TokenMaster);
         socket.broadcast.emit('getLiveUsersACK', TokenMaster);
+      //  io.to(data.rusid).emit('getLiveUsersACK', TokenMaster);
 
     })
 
@@ -265,18 +268,28 @@ _updatedatabase = (data) => {
         var rfaith = _oMDlistsFinder(data.reciver);
 
 
-        var newID = { branch: MasterDatabase.length - 1, shared: data.reciver }
-        UCD[sfaith].oMDlists.push(newID);
+        let newsID = { branch: MasterDatabase.length - 1, shared: data.reciver }
+        UCD[sfaith].oMDlists.push(newsID);
 
-        newID = { branch: MasterDatabase.length - 1, shared: data.sender }
-        UCD[rfaith].oMDlists.push(newID)
+        let newrID = { branch: MasterDatabase.length - 1, shared: data.sender }
+        UCD[rfaith].oMDlists.push(newrID)
 
-        globalSocket.emit('updateoMDlist', UCD[sfaith].oMDlists);
-        //   console.log(data.rusid)
-        globalSocket.broadcast.to(data.rusid).emit('updateoMDlist', UCD[rfaith].oMDlists);
+      //  globalSocket.emit('updateoMDlist', UCD[sfaith].oMDlists);
+      console.log( `== Omdlist==\n`)
 
-        globalSocket.emit('newMDID', newID);
-        globalSocket.broadcast.to(data.rusid).emit('newMDID', newID);
+      console.log( data.susid)
+           console.log( UCD[rfaith].oMDlists)
+           console.log( data.rusid)
+
+        // globalSocket.broadcast.to(data.susid).emit('updateoMDlist', UCD[sfaith].oMDlists);
+        // globalSocket.broadcast.to(data.rusid).emit('updateoMDlist', UCD[rfaith].oMDlists);
+     //   globalSocket.emit('updateoMDlist', UCD[sfaith].oMDlists);
+        io.to(data.rusid).emit('updateoMDlist', UCD[rfaith].oMDlists);
+        io.to(data.susid).emit('updateoMDlist', UCD[sfaith].oMDlists);
+
+        // globalSocket.emit('newMDID', newID);
+        // globalSocket.broadcast.to(data.rusid).emit('newMDID', newID);
+        // //Sending current omid -- 
 
         return MasterDatabase.length - 1;
 
