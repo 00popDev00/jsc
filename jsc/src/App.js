@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import Action from "./Redux/action";
-import ClientSocket from 'socket.io-client';
 import './style/App.css';
 import "antd/dist/antd.css";
 
-import { Input, Button, Row, Col } from 'antd';
+import { Input, Button } from 'antd';
 
 
-var socket;
 // import Methods from './HelperFunctions/start_screen'
 
 //Add local storage clear  signout for all components
@@ -77,7 +75,7 @@ class App extends Component {
 
                     //console.log(result.token.owner)
 
-                    localStorage.setItem(result.token.owner, result.token.owner)
+                  // why to use..maybe for relogin..se to it localStorage.setItem(result.token.owner, result.token.owner)
                 }
 
 
@@ -89,22 +87,23 @@ class App extends Component {
     }
 
     render() {
-        const { username, password } = this.state
+        // const { username, password } = this.state
         return (
 
             <div id="Appcontainer" >
                 <div id="Left_Appcontainer" >
                     <img
                         id="LeftContainerImage"
-                        src={require('./Images/LeftContainer.jpg')} />
+                        src={require('./Images/LeftContainer.jpg')}
+                        alt="Loginpic" />
 
                 </div>
                 <div id="Rigth_Appcontainer">
                     <div id="Login_container" >
-                        <p id="Input_container">
+                        <div id="Input_container">
 
                             <Input
-                                id='input'
+                                className='inputdata'
 
                                 placeholder='username'
                                 value={this.state.username}
@@ -118,7 +117,7 @@ class App extends Component {
                             /> */}
 
                             <Input
-                                id='input'
+                                className='inputdata'
 
                                 type='password'
                                 placeholder='password'
@@ -133,13 +132,13 @@ class App extends Component {
                                     (e) => this.setState({ password: e.target.value })}
                             /> */}
                             <div id='ForgetP'>
-                                <a>Forgot password</a>
+                                <a href='/#'>Forgot password </a>
                             </div>
 
-                        </p>
+                        </div>
 
 
-                        <p id="Button_Container">
+                        <div id="Button_Container">
                             {/* <button onClick={this._signup} > Signup </button> */}
 
 
@@ -183,13 +182,13 @@ class App extends Component {
                                     }
                                 } >Login</Button>
 
-                            <div id="or"><text>OR</text></div>
+                            <div id="or"><span>OR</span></div>
                             <Button
                                 id="Button"
                                 type="primary" block onClick={this._signup}>Signup</Button>
 
 
-                        </p>
+                        </div>
 
                     </div>
                 </div>

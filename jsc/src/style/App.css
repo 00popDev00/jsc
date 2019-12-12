@@ -54,7 +54,7 @@ body {
     flex-direction: row-reverse;
 }
 
-#input {
+.inputdata {
     font-size: 15px;
     line-height: 1.5;
     width: 100%;
@@ -94,6 +94,8 @@ max-height: 40px ;
 
 #Input_container {
     /* border: 2px solid red; */
+    display: flex;
+    flex-direction: column;
     padding: 5px;
     max-width: 400px;
 

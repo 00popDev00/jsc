@@ -122,10 +122,9 @@ io.on('connection', (socket) => {
 
         // socket.broadcast.to(data.rusid).emit('message', messagePacakge);
          io.to(data.rusid).emit('message', messagePacakge);
-
-        console.log('reciver = ', data.rusid)
+     //   console.log('reciver = ', data.rusid)
         socket.emit('message', messagePacakge);
-        console.log('sender = ', socket.id)
+     //   console.log('sender = ', socket.id)
 
 
 

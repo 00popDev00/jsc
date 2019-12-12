@@ -1,4 +1,4 @@
-var newState, Token;
+
 var prestate = {
     username: undefined,
     oMDlists: [],
@@ -134,15 +134,7 @@ catch(e)
   
 }
 
-const listentoSignout = () => {
 
-    // socket.on('SignoutACK',(data)=>{
-
-
-    // })
-
-    // return 
-}
 
 
 

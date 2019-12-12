@@ -2,24 +2,24 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import Action from "../Redux/action";
 import '../style/Chat.css'
-import { Avatar, Icon, Menu, Dropdown, Button } from 'antd';
+import { Avatar, Icon } from 'antd';
 
 //import ClientSocket from 'socket.io-client';
 
 //var socket = ClientSocket("http://localhost:1001/");
-const menu = (
-    <Menu>
-        <Menu.Item>
-            1st menu item
-      </Menu.Item>
-        <Menu.Item>
-            2nd menu item
-      </Menu.Item>
-        <Menu.Item>
-            3rd menu item
-      </Menu.Item>
-    </Menu>
-);
+// const menu = (
+//     <Menu>
+//         <Menu.Item>
+//             1st menu item
+//       </Menu.Item>
+//         <Menu.Item>
+//             2nd menu item
+//       </Menu.Item>
+//         <Menu.Item>
+//             3rd menu item
+//       </Menu.Item>
+//     </Menu>
+// );
 
 class Chat extends Component {
     state = {
@@ -79,12 +79,12 @@ class Chat extends Component {
 
         }
         else {
-            console.log("Loading.....no reciver selected yet")
+           // console.log("Loading.....no reciver selected yet")
         }
 
 
         this.props.socket.on('message', (data) => {
-            console.log("data from send", data)
+            console.log("data from send")//, data)
 
             var ml = this.props.currentchats;
 
@@ -96,7 +96,7 @@ class Chat extends Component {
 
             if (this.props.currentMD_id === undefined) {
                // this.props.CurrentMDid(data.MD_id);
-                if(this.props.currentreciver != undefined)
+                if(this.props.currentreciver !== undefined)
                 {
                     var faith = this.props.oMDlists.findIndex(e => { return e.shared === this.props.currentreciver.owner })
                     console.log('faith:',faith);

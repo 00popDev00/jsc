@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import App from './Router';
-import { createStore, combineReducers } from 'redux';
+import { createStore} from 'redux';
 import { Provider } from 'react-redux';
 import functionProvider from './Redux/Provider'
 import { composeWithDevTools } from 'redux-devtools-extension';
