@@ -4,11 +4,16 @@ import LiveUser from '../Components/liveUser'
 import Chat from '../Components/chat'
 import Action from "../Redux/action";
 import React, { Component } from 'react';
+import ClientSocket from 'socket.io-client';
+import '../style/HomePage.css'
+
+var socket = ClientSocket("http://localhost:1001/");
 
 class HomePage extends Component {
+
     state = {}
 
-    _signout = () => {
+    _signout = (user = this.props.username) => {
         fetch('http://localhost:5000/signout/', {
             headers: {
                 'Accept': 'application/json, text/plain, */*',
@@ -16,7 +21,7 @@ class HomePage extends Component {
             },
             method: 'post',
             body: JSON.stringify({
-                'userid': this.props.username,
+                'userid': user,
             }),
         })
             .then(e => { return e.json() })
@@ -28,31 +33,43 @@ class HomePage extends Component {
             .catch(error => console.error(error))
     }
 
-    componentDidMount() {
-        if (this.props.username === undefined || localStorage.getItem('Token') === null) {
-            // if (localStorage.getItem('Token') === null) {
-            //     this.props.history.push('/')
+    componentWillMount() {
 
-            // }
-            // else {
+        if (this.props.username === undefined) {
+            console.log("reload");
+            this.props.history.push('/');
 
-
-            //     this.props.Username(localStorage.getItem('User'))
-            //     this.props.Token(localStorage.getItem('Token'))
-
-
-            // }
-
+            //  localStorage.setItem('User', result.Token.owner)
+            //  this._signout(localStorage.getItem('User'))
+            localStorage.clear();
 
         }
 
+
+
     }
+    componentDidUpdate() {
+        if (this.props.username === undefined) {
+            console.log("reload");
+            this.props.history.push('/');
+
+            //  localStorage.setItem('User', result.Token.owner)
+            //  this._signout(localStorage.getItem('User'))
+            localStorage.clear();
+
+        }
+    }
+
+
+
+
     render() {
         //      console.log('username Homepage=>', this.props.username)
 
         return (
-            <div>
-                <h4>homePage</h4>
+            <div id="HomepageContainer">
+
+                {/* <h4>homePage</h4>
                 <button onClick={() => {
 
                     // this.props.signout();
@@ -60,17 +77,12 @@ class HomePage extends Component {
                     this.props.history.push('/')
 
 
-                }}>Signout</button>
-                <div style={{ display: 'flex', flex: 1, flexDirection: 'row' }}>
-                    <div style={{ flex: 1 }}>
-                        Live users
-                        <LiveUser />
-                    </div>
-                    <div style={{ flex: 1 }}>
-                        chat module
-                        <Chat />
-                    </div>
-                </div>
+                }}>Signout</button> */}
+
+                <LiveUser socket={socket} />
+
+                <Chat socket={socket} />
+
 
             </div>
         );
@@ -82,7 +94,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
     Username: (credential) => dispatch(Action.Username(credential)),
-    Token: (credential) => dispatch(Action.Token(credential)),
+    CurrentChats: (credential) => dispatch(Action.CurrentChats(credential)),
+
 
 
 
