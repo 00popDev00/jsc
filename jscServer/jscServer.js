@@ -23,26 +23,6 @@ var TokenMaster = [];  //|| List of online Users
 var MasterDatabase = [];
 var UCD = [];//UsersCredentialDatabse
 var prevToken; //Previous Token
-<<<<<<< HEAD
-=======
-
-
-app.get('/', function(req, res){
-    res.sendFile(path.join(__dirname + '/data.html'));
-
-  });
-
-app.get('/allData/', (req, res) => {
-  
-   // res.sendFile(path.join('jscServer\data.html'));
-
-        res.send({ message: '!! Already a User !!', TokenMaster: TokenMaster, MasterDatabase:MasterDatabase,UCD:UCD })
-
-    
-
-})
-
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
 
 app.post('/signup/', (req, res) => {
     //console.log(req.body)
@@ -110,21 +90,13 @@ app.post('/getDlist', (req, res) => {
 
     if (req.body.omd_id !== undefined) {
         var Dlists = _DlistsFinder(req.body.omd_id);
-<<<<<<< HEAD
         console.log("Dlists", Dlists);
-=======
-    //    console.log("Dlists", Dlists);
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
 
 
         res.send(Dlists);
     }
     else {
-<<<<<<< HEAD
         console.log("NoChats");
-=======
-    ///    console.log("NoChats");
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
 
         res.send({ "error": "NoChats" })
     }
@@ -149,18 +121,11 @@ io.on('connection', (socket) => {
             "MD_id": MD_id,
         }
 
-<<<<<<< HEAD
         // socket.broadcast.to(data.rusid).emit('message', messagePacakge);
          io.to(data.rusid).emit('message', messagePacakge);
      //   console.log('reciver = ', data.rusid)
         socket.emit('message', messagePacakge);
      //   console.log('sender = ', socket.id)
-=======
-        socket.broadcast.to(data.rusid).emit('message', messagePacakge);
-        console.log('reciver = ', data.rusid)
-        socket.emit('message', messagePacakge);
-        console.log('sender = ', socket.id)
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
 
 
 
@@ -224,7 +189,6 @@ _tokenManager = (data) => {
     let currentsocketid;
     //  console.log('globalSocket.id:  ', globalSocket.id)
     //  console.log('prevToken.id:  ', prevToken)
-<<<<<<< HEAD
 
     if (prevToken !== globalSocket.id) {
         prevToken = globalSocket.id;
@@ -263,46 +227,6 @@ _tokenManager = (data) => {
     else {
         return -1;
     }
-=======
-
-    if (prevToken !== globalSocket.id) {
-        prevToken = globalSocket.id;
-        currentsocketid = globalSocket.id;
-
-    }
-    else {
-
-        currentsocketid = 'same_id';
-    }
-    ///   console.log('after currentsocketid:  ', currentsocketid)
-
-    if (currentsocketid !== 'same_id') {
-        if (faith === -1) {
-            let newToken = {
-                owner: data,
-                usid: currentsocketid,
-                time: new Date(),
-                oMDlists: UCD[_oMDlistsFinder(data)].oMDlists,
-
-            }
-
-
-            TokenMaster.push(newToken);
-
-
-            return newToken;
-
-            // console.log('\nToken Master:\n', TokenMaster, '\n')
-        }
-        else {
-            //already logged in
-            return TokenMaster[faith];
-        }
-    }
-    else {
-        return -1;
-    }
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
 
 }
 
@@ -350,7 +274,6 @@ _updatedatabase = (data) => {
         let newrID = { branch: MasterDatabase.length - 1, shared: data.sender }
         UCD[rfaith].oMDlists.push(newrID)
 
-<<<<<<< HEAD
       //  globalSocket.emit('updateoMDlist', UCD[sfaith].oMDlists);
       console.log( `== Omdlist==\n`)
 
@@ -368,17 +291,6 @@ _updatedatabase = (data) => {
         // globalSocket.broadcast.to(data.rusid).emit('newMDID', newID);
         // //Sending current omid -- 
 
-=======
-        globalSocket.emit('updateoMDlist', UCD[sfaith].oMDlists);
-           console.log("new database entery: /nTo:",data.reciver , "from:",data.sender);
-        globalSocket.broadcast.to(data.rusid).emit('updateoMDlist', UCD[rfaith].oMDlists);
-        globalSocket.broadcast.to(data.susid).emit('updateoMDlist', UCD[sfaith].oMDlists);
-
-
-        globalSocket.emit('newMDID', newID);
-        globalSocket.broadcast.to(data.rusid).emit('newMDID', newID);
-
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
         return MasterDatabase.length - 1;
 
     }
@@ -398,11 +310,7 @@ _updatedatabase = (data) => {
 
 _DlistsFinder = (credential) => {
 
-<<<<<<< HEAD
     console.log("credential", credential)
-=======
-  //  console.log("credential", credential)
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
     return MasterDatabase[credential].Dlists
 }
 
