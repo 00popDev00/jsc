@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import Action from "./Redux/action";
-<<<<<<< HEAD
-import './style/App.css';
-import "antd/dist/antd.css";
-
-import { Input, Button } from 'antd';
-
-=======
 import ClientSocket from 'socket.io-client';
 import './style/App.css';
 import "antd/dist/antd.css";
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
 
 import { Input, Button, Row, Col } from 'antd';
 
@@ -85,11 +77,7 @@ class App extends Component {
 
                     //console.log(result.token.owner)
 
-<<<<<<< HEAD
-                  // why to use..maybe for relogin..se to it localStorage.setItem(result.token.owner, result.token.owner)
-=======
                     localStorage.setItem(result.token.owner, result.token.owner)
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
                 }
 
 
@@ -101,38 +89,22 @@ class App extends Component {
     }
 
     render() {
-<<<<<<< HEAD
-        // const { username, password } = this.state
-=======
         const { username, password } = this.state
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
         return (
 
             <div id="Appcontainer" >
                 <div id="Left_Appcontainer" >
                     <img
                         id="LeftContainerImage"
-<<<<<<< HEAD
-                        src={require('./Images/LeftContainer.jpg')}
-                        alt="Loginpic" />
-=======
                         src={require('./Images/LeftContainer.jpg')} />
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
 
                 </div>
                 <div id="Rigth_Appcontainer">
                     <div id="Login_container" >
-<<<<<<< HEAD
-                        <div id="Input_container">
-
-                            <Input
-                                className='inputdata'
-=======
                         <p id="Input_container">
 
                             <Input
                                 id='input'
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
 
                                 placeholder='username'
                                 value={this.state.username}
@@ -146,11 +118,7 @@ class App extends Component {
                             /> */}
 
                             <Input
-<<<<<<< HEAD
-                                className='inputdata'
-=======
                                 id='input'
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
 
                                 type='password'
                                 placeholder='password'
@@ -165,15 +133,6 @@ class App extends Component {
                                     (e) => this.setState({ password: e.target.value })}
                             /> */}
                             <div id='ForgetP'>
-<<<<<<< HEAD
-                                <a href='/#'>Forgot password </a>
-                            </div>
-
-                        </div>
-
-
-                        <div id="Button_Container">
-=======
                                 <a>Forgot password</a>
                             </div>
 
@@ -181,7 +140,6 @@ class App extends Component {
 
 
                         <p id="Button_Container">
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
                             {/* <button onClick={this._signup} > Signup </button> */}
 
 
@@ -225,21 +183,13 @@ class App extends Component {
                                     }
                                 } >Login</Button>
 
-<<<<<<< HEAD
-                            <div id="or"><span>OR</span></div>
-=======
                             <div id="or"><text>OR</text></div>
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
                             <Button
                                 id="Button"
                                 type="primary" block onClick={this._signup}>Signup</Button>
 
 
-<<<<<<< HEAD
-                        </div>
-=======
                         </p>
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
 
                     </div>
                 </div>

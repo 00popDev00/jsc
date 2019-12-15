@@ -2,30 +2,11 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import Action from "../Redux/action";
 import '../style/Chat.css'
-<<<<<<< HEAD
-import { Avatar, Icon } from 'antd';
-=======
 import { Avatar, Icon, Menu, Dropdown, Button } from 'antd';
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
 
 //import ClientSocket from 'socket.io-client';
 
 //var socket = ClientSocket("http://localhost:1001/");
-<<<<<<< HEAD
-// const menu = (
-//     <Menu>
-//         <Menu.Item>
-//             1st menu item
-//       </Menu.Item>
-//         <Menu.Item>
-//             2nd menu item
-//       </Menu.Item>
-//         <Menu.Item>
-//             3rd menu item
-//       </Menu.Item>
-//     </Menu>
-// );
-=======
 const menu = (
     <Menu>
         <Menu.Item>
@@ -39,7 +20,6 @@ const menu = (
       </Menu.Item>
     </Menu>
 );
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
 
 class Chat extends Component {
     state = {
@@ -59,10 +39,7 @@ class Chat extends Component {
                 message: undefined,
 
             });
-<<<<<<< HEAD
-=======
             console.log('idk')
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
             // this.props.CurrentChats([])
         }
         else {
@@ -103,46 +80,23 @@ class Chat extends Component {
 
         }
         else {
-<<<<<<< HEAD
-           // console.log("Loading.....no reciver selected yet")
-=======
             console.log("Loading.....no reciver selected yet")
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
         }
 
 
         this.props.socket.on('message', (data) => {
-<<<<<<< HEAD
-            console.log("data from send")//, data)
-=======
             console.log("data from send", data)
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
 
             var ml = this.props.currentchats;
 
 
             ml.push(data);
             this.props.CurrentChats(ml)
-<<<<<<< HEAD
-           // console.log('---=>', this.props.socket.id)
-            this.setState({});
-
-            if (this.props.currentMD_id === undefined) {
-               // this.props.CurrentMDid(data.MD_id);
-                if(this.props.currentreciver !== undefined)
-                {
-                    var faith = this.props.oMDlists.findIndex(e => { return e.shared === this.props.currentreciver.owner })
-                    console.log('faith:',faith);
-                    this.props.CurrentMDid(this.props.oMDlists[faith].branch)
-                }
-                
-=======
             console.log('---=>', this.props.currentchats)
             this.setState({});
 
             if (this.props.currentMD_id === undefined) {
                 this.props.CurrentMDid(data.MD_id);
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
             }
 
 
@@ -152,7 +106,6 @@ class Chat extends Component {
     _send = () => {
         var sendPackage = {
             "rusid": this.props.currentreciver.usid,
-            "susid": this.props.socket.id,
             "message": this.state.message,
             "sender": this.props.username,
             "reciver": this.props.currentreciver.owner,

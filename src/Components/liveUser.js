@@ -8,69 +8,14 @@ import { Avatar, Badge } from 'antd';
 
 class LiveUser extends Component {
     state = { onlineUser: [], messageList: [] }
-<<<<<<< HEAD
 
-
-    _signout = (user = this.props.username) => {
-        fetch('http://localhost:5000/signout/', {
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json'
-            },
-            method: 'post',
-            body: JSON.stringify({
-                'userid': user,
-            }),
-        })
-            .then(e => { return e.json() })
-            .then(data => {
-                console.log('status:', data);
-                localStorage.clear();
-
-                
-
-
-            })
-            .catch(error => console.error(error))
-
-            this.props.Signout();
-    }
-
-    _getDatabase = (branch) => {
-
-        fetch('http://localhost:5000/getDlist/', {
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json'
-            },
-            method: 'post',
-            body: JSON.stringify({
-                "omd_id": branch,
-            }),
-        })
-            .then(e => { return e.json() })
-            .then(result => {
-                //  console.log('Dlist result:');
-                if (result.error === "NoChats") {
-
-
-                }
-                else {
-                    this.setState({ messageList: result });
-                    this.props.CurrentChats(result)
-=======
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
-
-
-                    // console.log("currentchats",this.props.currentchats)
-
-                }
-
-
-
-            })
-            .catch(error => console.error(error))
-    }
+    // componentWillUpdate(nextProps, nextState) {
+    //     console.log('nextProps: ', nextProps)
+    //     console.log('nextState: ', nextState)
+    //     // if(nextProps.onlineUser !== this.props.onlineUser ){
+    //     //     this.setState({onlineUser: this.props.onlineUser})
+    //     // }
+    // }
 
 
     _signout = (user = this.props.username) => {
@@ -142,10 +87,6 @@ class LiveUser extends Component {
 
         this.props.socket.on('updateoMDlist', (data) => {
             console.log("updateoMDlist", data)
-<<<<<<< HEAD
-
-            this.props.OMDlists(data)
-=======
 
             this.props.OMDlists(data)
             // this.setState({ omd_id: data });
@@ -159,24 +100,11 @@ class LiveUser extends Component {
 
             //    this.props.CurrentMDid(data.branch)
             // this.setState({ omd_id: data });
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
 
         })
 
-        // this.props.socket.on('newMDID', (data) => {
-        //     let newToken = this.props.token
-        //     console.log("token", newToken)
-        //     console.log("newMDID", data)
 
 
-        // })
-
-
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
     }
 
     _selectUser = (data) => {
@@ -185,33 +113,20 @@ class LiveUser extends Component {
         if (faith === -1) {
             console.log("error", data);
             this.props.CurrentChats([])
-<<<<<<< HEAD
-            this.props.CurrentMDid(undefined)
-            this.props.CurrentReciver(data);
-=======
 
             this.props.CurrentReciver(data);
             //this.props.CurrentMDid(this.props.oMDlists[faith].branch)
 
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
         }
         else {
             // console.log("branch:", this.props.token[faith].branch)
             this.props.CurrentMDid(this.props.oMDlists[faith].branch)
-<<<<<<< HEAD
-              console.log("currentMD_id on select:", this.props.currentMD_id)
-=======
             //  console.log("currentMD_id on select:", this.props.currentMD_id)
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
             this._getDatabase(this.props.oMDlists[faith].branch);
             //console.log("_getDatabase on select:", this.props.currentMD_id)
             let x = setInterval(() => {
                 this.props.CurrentReciver(data);
-<<<<<<< HEAD
-            //    console.log('idk0nonce', this.props.currentchats)
-=======
                 console.log('idk0nonce', this.props.currentchats)
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
     
                 if (this.props.currentchats !== undefined) { clearInterval(x) }
     
