@@ -98,9 +98,11 @@ class LiveUser extends Component {
 
     _selectUser = (data) => {
         console.log("\n\n===================================")
+        console.log("data.userid on select:", data.userid)
+
         var faith = this.props.oMDlists.findIndex(e => { return e.shared === data.owner })
         if (faith === -1) {
-            console.log("error", data);
+            console.log("not in oMDlist:", data);
             this.props.CurrentChats([])
             this.props.CurrentMDid(undefined)
             this.props.CurrentReciver(data);

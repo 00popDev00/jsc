@@ -13,7 +13,12 @@ module.exports = {
       credential
     }
   },
-
+  NotificationManager: (credential) => {
+    return {
+      type: "notificationmanager",
+      credential
+    }
+  },
   OMDlists: (credential) => {
     return {
       type: "oMDlists",

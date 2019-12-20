@@ -9,6 +9,7 @@ var prestate = {
     mysocket:undefined,
     currentMD_id:undefined,
     currentchats:[],
+    notificationManager:[]
 }
 
 // //Demo prestate
@@ -91,7 +92,7 @@ export default (state = prestate, action) => {
 
         case 'oMDlists': return {...state,oMDlists:action.credential};
 
-        case 'Onlineusers': OnlineusersManager(state,action.credential); return {...state,onlineUser:action.credential};
+        case 'Onlineusers': return {...state,onlineUser:action.credential};
 
         case 'currentreciver': return {...state,currentreciver:action.credential};
         
@@ -100,6 +101,11 @@ export default (state = prestate, action) => {
         case 'currentchats': return {...state,currentchats:action.credential};
 
         case 'signout': return {...state,username:undefined};
+
+        case 'notificationmanager': return {...state,notificationManager:ManageNotification(action.credential,state.notificationManager)};
+
+
+        
 
        // case 'listentoSignout': return listentoSignout();
        
@@ -119,20 +125,59 @@ export default (state = prestate, action) => {
 //     time: '2019-10-05T09:07:02.365Z',
 //     oMDlists: []
 //   },
-const OnlineusersManager = (prestate,onlineUser) => {
-try{
- var  updatestatus = onlineUser.findIndex(e=>{return e.owner ===  prestate.currentreciver.owner})
 
-   if(updatestatus !== -1){
-    prestate.currentreciver.usid = onlineUser[updatestatus].usid;
-   }
-}
-catch(e)
+const ManageNotification = (credential,notificatiomnanager) =>{
+    var faith = notificatiomnanager.findIndex(e => { return e === credential.reciver });
+
+if(credential.flag === "remove")
 {
-    console.log('\n OnlibeusersManager: ',e);
+    notificatiomnanager.splice(faith,1);
+    console.log('remove notificatiomnanager',notificatiomnanager)
+    return notificatiomnanager;
 }
+else{
+    console.log('faith',faith , typeof(faith))
+
+    if( faith === -1  )
+    {
+        var newNotification = {
+            reciver:credential.reciver,
+            notificationCount: 1,      
+        }
+
+        notificatiomnanager.push(newNotification);
+        console.log('new notificatiomnanager',notificatiomnanager)
+
+        return notificatiomnanager;
+
+    }
+    else{
+        //already in notificaation
+        notificatiomnanager[faith].notificationCount += 1;
+        console.log('add notificatiomnanager',notificatiomnanager)
+        return notificatiomnanager;
+    }
+}
+
+    
+}
+
+
+
+// const OnlineusersManager = (prestate,onlineUser) => {
+// try{
+//  var  updatestatus = onlineUser.findIndex(e=>{return e.owner ===  prestate.currentreciver.owner})
+
+//    if(updatestatus !== -1){
+//     prestate.currentreciver.usid = onlineUser[updatestatus].usid;
+//    }
+// }
+// catch(e)
+// {
+//     console.log('\n OnlibeusersManager: ',e);
+// }
   
-}
+// }
 
 
 
