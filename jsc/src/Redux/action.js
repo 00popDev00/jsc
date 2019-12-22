@@ -21,6 +21,14 @@ module.exports = {
     }
   },
 
+  NotificationManage: (credential) => {
+    return {
+      type: "notification",
+      credential
+      
+    }
+  },
+
   CurrentReciver: (credential) => {
     return {
       type: "currentreciver",

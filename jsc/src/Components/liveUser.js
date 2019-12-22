@@ -129,6 +129,7 @@ class LiveUser extends Component {
             .catch(error => console.error(error))
     }
 
+    
     componentDidMount() {
 
         this.props.socket.emit('getLiveUsers');

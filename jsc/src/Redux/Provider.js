@@ -94,7 +94,10 @@ export default (state = prestate, action) => {
         case 'Onlineusers': OnlineusersManager(state,action.credential); return {...state,onlineUser:action.credential};
 
         case 'currentreciver': return {...state,currentreciver:action.credential};
-        
+
+        case 'notification': return {...state,};
+
+
         case 'currentMDid': return {...state,currentMD_id:action.credential};
 
         case 'currentchats': return {...state,currentchats:action.credential};

@@ -86,13 +86,20 @@ class Chat extends Component {
         this.props.socket.on('message', (data) => {
             console.log("data from send")//, data)
 
-            var ml = this.props.currentchats;
+            if(data.reciver === this.props.currentreciver)
+            {
+                var ml = this.props.currentchats;
 
-
-            ml.push(data);
-            this.props.CurrentChats(ml)
-           // console.log('---=>', this.props.socket.id)
-            this.setState({});
+                ml.push(data);            
+                this.props.CurrentChats(ml)
+               // console.log('---=>', this.props.socket.id)
+                this.setState({});
+            }
+            else{
+                //goes to notification manager
+                
+            }
+            
 
             if (this.props.currentMD_id === undefined) {
                // this.props.CurrentMDid(data.MD_id);

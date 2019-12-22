@@ -6,11 +6,6 @@ import "antd/dist/antd.css";
 
 import { Input, Button } from 'antd';
 
-
-import { Input, Button, Row, Col } from 'antd';
-
-
-var socket;
 // import Methods from './HelperFunctions/start_screen'
 
 //Add local storage clear  signout for all components

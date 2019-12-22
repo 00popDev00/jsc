@@ -54,11 +54,7 @@ body {
     flex-direction: row-reverse;
 }
 
-<<<<<<< HEAD
 .inputdata {
-=======
-#input {
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
     font-size: 15px;
     line-height: 1.5;
     width: 100%;
@@ -98,11 +94,8 @@ max-height: 40px ;
 
 #Input_container {
     /* border: 2px solid red; */
-<<<<<<< HEAD
     display: flex;
     flex-direction: column;
-=======
->>>>>>> 5630548e1f2509f969fd2cd5492e09074b0e3af6
     padding: 5px;
     max-width: 400px;
 
