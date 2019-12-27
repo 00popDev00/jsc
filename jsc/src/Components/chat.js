@@ -102,15 +102,27 @@ class Chat extends Component {
             
 
             if (this.props.currentMD_id === undefined) {
-               // this.props.CurrentMDid(data.MD_id);
-                if(this.props.currentreciver !== undefined)
-                {
-                    var faith = this.props.oMDlists.findIndex(e => { return e.shared === this.props.currentreciver.owner })
-                    console.log('faith:',faith);
-                    this.props.CurrentMDid(this.props.oMDlists[faith].branch)
-                }
-                
+                // this.props.CurrentMDid(data.MD_id);
+                 if(this.props.currentreciver !== undefined)
+                 {
+                     var faith = this.props.oMDlists.findIndex(e => { return e.shared === this.props.currentreciver.owner })
+                     console.log('faith:',faith);
+                     this.props.CurrentMDid(this.props.oMDlists[faith].branch)
+                 }
+                 
+             }
+            if(this.props.currentMD_id === data.MD_id)
+            {
+                var ml = this.props.currentchats;
+                ml.push(data);
+                this.props.CurrentChats(ml)
+                this.setState({});
             }
+            else
+            {
+                console.log('data.MD_id',data.MD_id)
+                this.props.NotificationManager({flag:'add',reciver:data.reciver})
+            }                 
 
 
         })
@@ -218,6 +230,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     CurrentChats: (credential) => dispatch(Action.CurrentChats(credential)),
     CurrentMDid: (credential) => dispatch(Action.CurrentMDid(credential)),
+    NotificationManager: (credential) => dispatch(Action.NotificationManager(credential)),
+
+    
 
     // Onlineusers: (credential) => dispatch(Action.Onlineusers(credential)),
     //CurrentReciver: (credential) => dispatch(Action.CurrentReciver(credential))

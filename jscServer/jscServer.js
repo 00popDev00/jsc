@@ -118,6 +118,7 @@ io.on('connection', (socket) => {
             "message": data.message,
             "timestamp": data.timestamp,
             "owner": data.sender,
+            "reciver": data.reciver,
             "MD_id": MD_id,
         }
 
@@ -207,7 +208,7 @@ _tokenManager = (data) => {
                 owner: data,
                 usid: currentsocketid,
                 time: new Date(),
-                oMDlists: UCD[_oMDlistsFinder(data)].oMDlists,
+              //  oMDlists: UCD[_oMDlistsFinder(data)].oMDlists, //remove in next update
 
             }
 
