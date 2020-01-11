@@ -9,7 +9,8 @@ var prestate = {
     mysocket:undefined,
     currentMD_id:undefined,
     currentchats:[],
-    notificationManager:[]
+    notificationManager:[],
+    localstorageindex: undefined,
 }
 
 // //Demo prestate
@@ -98,6 +99,8 @@ export default (state = prestate, action) => {
 
         case 'notification': return {...state,};
 
+        case 'setloginuserindex': return {...state,localstorageindex:action.credential};
+
 
         case 'currentMDid': return {...state,currentMD_id:action.credential};
 
@@ -107,7 +110,7 @@ export default (state = prestate, action) => {
 
         case 'notificationmanager': return {...state,notificationManager:ManageNotification(action.credential,state.notificationManager)};
 
-
+        
         
 
        // case 'listentoSignout': return listentoSignout();

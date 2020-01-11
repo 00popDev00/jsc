@@ -55,7 +55,8 @@ app.post('/login', (req, res) => {
 
     }
     else {
-        res.send({ faith: faith, token: token })
+        res.send({ faith: faith, token: UCD[_oMDlistsFinder(req.body.userid)].oMDlists })
+console.log('user '+req.body.userid+ 'joined')
 
     }
     // socket.emit('SigninACK', {faith:faith,Token:TokenMaster[faith]});
@@ -86,7 +87,7 @@ app.post('/signout', (req, res) => {
 
 app.post('/getDlist', (req, res) => {
 
-    console.log('Request: ', req.body);
+    console.log('Request for Dlist: ', req.body.userid);
 
     if (req.body.omd_id !== undefined) {
         var Dlists = _DlistsFinder(req.body.omd_id);
@@ -126,7 +127,7 @@ io.on('connection', (socket) => {
          io.to(data.rusid).emit('message', messagePacakge);
      //   console.log('reciver = ', data.rusid)
         socket.emit('message', messagePacakge);
-     //   console.log('sender = ', socket.id)
+        console.log('message by (sender) ', data.sender, ' to (reciver) ' , data.reciver);
 
 
 
@@ -208,7 +209,7 @@ _tokenManager = (data) => {
                 owner: data,
                 usid: currentsocketid,
                 time: new Date(),
-              //  oMDlists: UCD[_oMDlistsFinder(data)].oMDlists, //remove in next update
+               // oMDlists: UCD[_oMDlistsFinder(data)].oMDlists, //remove in next update
 
             }
 
@@ -278,9 +279,8 @@ _updatedatabase = (data) => {
       //  globalSocket.emit('updateoMDlist', UCD[sfaith].oMDlists);
       console.log( `== Omdlist==\n`)
 
-      console.log( data.susid)
-           console.log( UCD[rfaith].oMDlists)
-           console.log( data.rusid)
+      console.log('reciver Mdlist: ' ,data.rusid)
+           console.log( 'sender Mdlist: ', data.susid)
 
         // globalSocket.broadcast.to(data.susid).emit('updateoMDlist', UCD[sfaith].oMDlists);
         // globalSocket.broadcast.to(data.rusid).emit('updateoMDlist', UCD[rfaith].oMDlists);
@@ -296,7 +296,7 @@ _updatedatabase = (data) => {
 
     }
     else {
-        //  console.log("data.MD_id", data.MD_id, "\n");
+          console.log("preexist mdid", data.MD_id, "\n");
         MasterDatabase[data.MD_id].Dlists.push(newEntry);
         return data.MD_id;
     }

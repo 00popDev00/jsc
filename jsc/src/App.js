@@ -68,13 +68,22 @@ class App extends Component {
                         this.props.Username(this.state.username)
 
                     }
-                    this.props.OMDlists(result.token.oMDlists)
-                    //localStorage.setItem('Token', result.Token.usid)
+                    this.props.OMDlists(result.token);
+                    // let Devcount = 0;
+                    // for (let i = 0; i < 10; i++) {
+                    //     if (localStorage.getItem('' + i) === null) {
+                    //         console.log('in')
+                    //         localStorage.setItem('' + i, this.state.username)
+                    //         this.props.setLoginUserIndex(i);
+                    //         break;
+                    //     }
+                    // }
+
 
 
                     //console.log(result.token.owner)
 
-                  // why to use..maybe for relogin..se to it localStorage.setItem(result.token.owner, result.token.owner)
+                    // why to use..maybe for relogin..se to it localStorage.setItem(result.token.owner, result.token.owner)
                 }
 
 
@@ -84,6 +93,32 @@ class App extends Component {
             })
             .catch(error => console.error(error))
     }
+
+
+    _signout = (user = this.props.username) => {
+        fetch('http://localhost:5000/signout/', {
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            method: 'post',
+            body: JSON.stringify({
+                'userid': user,
+            }),
+        })
+            .then(e => { return e.json() })
+            .then(data => {
+                console.log('status:', data);
+               // localStorage.clear();
+
+            })
+            .catch(error => console.error(error))
+    }
+
+
+
+    //            this._signout(localStorage.getItem(''+ this.props.localstorageindex))
+
 
     render() {
         // const { username, password } = this.state
@@ -204,6 +239,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     Username: (credential) => dispatch(Action.Username(credential)),
     OMDlists: (credential) => dispatch(Action.OMDlists(credential)),
+    setLoginUserIndex: (credential) => dispatch(Action.setLoginUserIndex(credential)),
+
     // signout: (credential) => dispatch(Action._signout(credential))
 
 

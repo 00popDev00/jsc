@@ -11,7 +11,7 @@ var socket = ClientSocket("http://localhost:1001/");
 
 class HomePage extends Component {
 
-    state = {}
+    state = {reloadstatus:0}
 
     _signout = (user = this.props.username) => {
         fetch('http://localhost:5000/signout/', {
@@ -36,30 +36,32 @@ class HomePage extends Component {
     componentWillMount() {
 
         if (this.props.username === undefined) {
-            console.log("reload");
+           // console.log("reload M");
             this.props.history.push('/');
 
             //  localStorage.setItem('User', result.Token.owner)
-            //  this._signout(localStorage.getItem('User'))
-            localStorage.clear();
+          //  this._signout(localStorage.getItem(''+ this.props.localstorageindex))
+            //localStorage.clear();
 
         }
-
-
-
     }
+      
+
+
+    
     componentDidUpdate() {
         if (this.props.username === undefined) {
-            console.log("reload");
+           // console.log("reload U");
             this.props.history.push('/');
 
             //  localStorage.setItem('User', result.Token.owner)
             //  this._signout(localStorage.getItem('User'))
-            localStorage.clear();
+           // localStorage.clear();
 
         }
-    }
 
+        
+    }
 
 
 

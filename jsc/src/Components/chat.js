@@ -96,6 +96,9 @@ class Chat extends Component {
                 this.setState({});
             }
             else{
+
+                console.log("notification",data )//, data)
+
                 //goes to notification manager
                 
             }
@@ -179,7 +182,7 @@ class Chat extends Component {
                                 this.props.currentchats.length > 0 ? this.props.currentchats.map((e, index) => (
 
                                     e.owner === this.props.username ?
-                                        <div id="BubblePlateOwner">
+                                        <div id="BubblePlateOwner"  key={index} >
 
                                             <div id="ChatBubbleOwner" key={index} >
                                                 <div id="Message"> {e.message}</div>
@@ -189,7 +192,7 @@ class Chat extends Component {
                                         </div>
 
                                         :
-                                        <div id="BubblePlate">
+                                        <div id="BubblePlate"  key={index} >
 
                                             <div id="ChatBubble" key={index}>
                                                 <div id="Message"> {e.message}</div>

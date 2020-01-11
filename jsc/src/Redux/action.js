@@ -26,6 +26,13 @@ module.exports = {
     }
   },
 
+  
+  setLoginUserIndex: (credential) => {
+    return {
+      type: "setloginuserindex",
+      credential
+    }
+  },
   NotificationManage: (credential) => {
     return {
       type: "notification",

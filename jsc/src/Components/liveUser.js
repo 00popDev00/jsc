@@ -26,13 +26,13 @@ class LiveUser extends Component {
                 console.log('status:', data);
                 localStorage.clear();
 
-                
+
 
 
             })
             .catch(error => console.error(error))
 
-            this.props.Signout();
+        this.props.Signout();
     }
 
     _getDatabase = (branch) => {
@@ -70,66 +70,7 @@ class LiveUser extends Component {
     }
 
 
-    _signout = (user = this.props.username) => {
-        fetch('http://localhost:5000/signout/', {
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json'
-            },
-            method: 'post',
-            body: JSON.stringify({
-                'userid': user,
-            }),
-        })
-            .then(e => { return e.json() })
-            .then(data => {
-                console.log('status:', data);
-                localStorage.clear();
 
-                
-
-
-            })
-            .catch(error => console.error(error))
-
-            this.props.Signout();
-    }
-
-    _getDatabase = (branch) => {
-
-        fetch('http://localhost:5000/getDlist/', {
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json'
-            },
-            method: 'post',
-            body: JSON.stringify({
-                "omd_id": branch,
-            }),
-        })
-            .then(e => { return e.json() })
-            .then(result => {
-                //  console.log('Dlist result:');
-                if (result.error === "NoChats") {
-
-
-                }
-                else {
-                    this.setState({ messageList: result });
-                    this.props.CurrentChats(result)
-
-
-                    // console.log("currentchats",this.props.currentchats)
-
-                }
-
-
-
-            })
-            .catch(error => console.error(error))
-    }
-
-    
     componentDidMount() {
 
         this.props.socket.emit('getLiveUsers');
@@ -145,13 +86,7 @@ class LiveUser extends Component {
 
         })
 
-        // this.props.socket.on('newMDID', (data) => {
-        //     let newToken = this.props.token
-        //     console.log("token", newToken)
-        //     console.log("newMDID", data)
-
-
-        // })
+      
 
 
 
@@ -171,19 +106,50 @@ class LiveUser extends Component {
         else {
             // console.log("branch:", this.props.token[faith].branch)
             this.props.CurrentMDid(this.props.oMDlists[faith].branch)
-              console.log("currentMD_id on select:", this.props.currentMD_id)
+            console.log("currentMD_id on select:", this.props.currentMD_id)
             this._getDatabase(this.props.oMDlists[faith].branch);
             //console.log("_getDatabase on select:", this.props.currentMD_id)
             let x = setInterval(() => {
                 this.props.CurrentReciver(data);
-            //    console.log('idk0nonce', this.props.currentchats)
-    
+                //    console.log('idk0nonce', this.props.currentchats)
+
                 if (this.props.currentchats !== undefined) { clearInterval(x) }
-    
+
             }, 100)
 
         }
-     
+        console.log("===================================\n\n")
+    }
+
+    _selectHistoryUser = (data) => {
+        console.log("\n\n===================================")
+
+        var Historydata=this.props.onlineUser[this.props.onlineUser.findIndex(e => { return e.owner === data.shared }) ]
+        console.log("data.userid on select:", Historydata)
+
+        var faith = this.props.oMDlists.findIndex(e => { return e.shared === Historydata.owner })
+        if (faith === -1) {
+            console.log(" not in oMDlist:", Historydata);
+            this.props.CurrentChats([])
+            this.props.CurrentMDid(undefined)
+            this.props.CurrentReciver(Historydata);
+        }
+        else {
+            // console.log("branch:", this.props.token[faith].branch)
+            this.props.CurrentMDid(this.props.oMDlists[faith].branch)
+            console.log("currentMD_id on select:", this.props.currentMD_id)
+            this._getDatabase(this.props.oMDlists[faith].branch);
+            //console.log("_getDatabase on select:", this.props.currentMD_id)
+            let x = setInterval(() => {
+                this.props.CurrentReciver(Historydata);
+                //    console.log('idk0nonce', this.props.currentchats)
+
+                if (this.props.currentchats !== undefined) { clearInterval(x) }
+
+            }, 100)
+
+        }
+
 
 
         console.log("===================================\n\n")
@@ -196,57 +162,83 @@ class LiveUser extends Component {
         return (
             <div id="LiveuserContainer">
                 <div id="UserProfileTab">
-                <div id="UserProfilePlate">
+                    <div id="UserProfilePlate">
 
-                    <div id="UserAvtar_Div">
-                        <Avatar size={64} icon="user"
-                            onClick={() => this._signout()}
-                        />
-                    </div>
-                    <div id="UserContent_Div">
-                        data
+                        <div id="UserAvtar_Div">
+                            <Avatar size={64} icon="user"
+                                onClick={() => this._signout()}
+                            />
+                        </div>
+                        <div id="UserContent_Div">
+                            data
                     </div>
                     </div>
 
                 </div>
                 <div id="OnlineUsersContainer">
-                <div id="OnlineUsersPlate">
+                    <div id="OnlineUsersPlate">
 
 
-                    {this.props.onlineUser.map((e, index) => (
-                        e.owner !== this.props.username ?
+                        {this.props.oMDlists !== undefined ?
 
+                            this.props.oMDlists.map((e, index) => (
+                                <div id="OnlineUsersTab" key={index} >
+                                    <div id="ReciverAvtar_Div"
+                                        
+                                    >
+                                        <Badge count={1}>
+                                            <Avatar size={40} icon="user"
+                                                onClick={() => alert('ReciverAvtar_Div')}
+                                            />
+                                        </Badge>
 
+                                    </div>
+                                    <div id="ReciverContent_Div"
+                                        onClick={() => this._selectHistoryUser(e)}
 
-                            <div id="OnlineUsersTab" >
-                                <div id="ReciverAvtar_Div"
-                                    key={index}
-                                >
-                                    <Badge count={1}>
-                                        <Avatar size={40} icon="user"
-                                            onClick={() => alert('ReciverAvtar_Div')}
-                                        />
-                                    </Badge>
-
+                                    >
+                                        {e.shared}
+                                    </div>
                                 </div>
-                                <div id="ReciverContent_Div"
-                                    onClick={() => this._selectUser(e)}
-
-                                >
-                                    {e.owner}
-
-                                </div>
-
-
-                            </div>
-                            
-
-
-                            : null
-
-                    ))}
+                            ))
+                            : null}
 
                     </div>
+                    <div id="OnlineUsersPlate">
+
+
+                        {this.props.onlineUser.map((e, index) => (
+                            e.owner !== this.props.username ?
+                                <div id="OnlineUsersTab"   key={index}>
+                                    <div id="ReciverAvtar_Div"
+                                       
+                                    >
+                                        <Badge count={1}>
+                                            <Avatar size={40} icon="user"
+                                                onClick={() => alert('ReciverAvtar_Div')}
+                                            />
+                                        </Badge>
+
+                                    </div>
+                                    <div id="ReciverContent_Div"
+                                        onClick={() => this._selectUser(e)}
+
+                                    >
+                                        {e.owner}
+
+                                    </div>
+
+
+                                </div>
+
+
+
+                                : null
+
+                        ))}
+
+                    </div>
+
                 </div>
 
 
@@ -267,11 +259,6 @@ const mapDispatchToProps = dispatch => ({
     OMDlists: (credential) => dispatch(Action.OMDlists(credential)),
     CurrentChats: (credential) => dispatch(Action.CurrentChats(credential)),
     Signout: () => dispatch(Action.Signout()),
-
-    
-
-
-
 
 
 });
