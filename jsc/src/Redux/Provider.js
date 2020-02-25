@@ -108,7 +108,7 @@ export default (state = prestate, action) => {
 
         case 'signout': return {...state,username:undefined};
 
-        case 'notificationmanager': return {...state,notificationManager:ManageNotification(action.credential,state.notificationManager)};
+        case 'notificationmanager': return {...state,...ManageNotification(action.credential,state.notificationManager,state.oMDlists)};
 
         
         
@@ -122,9 +122,6 @@ export default (state = prestate, action) => {
 
 
 
-
-
-
 //   currentreciver: {
 //     owner: 'b',
 //     usid: 'mTa0jEbA_YRkD0D4AADI',
@@ -132,14 +129,16 @@ export default (state = prestate, action) => {
 //     oMDlists: []
 //   },
 
-const ManageNotification = (credential,notificatiomnanager) =>{
+const ManageNotification = (credential,notificatiomnanager,oMDlists) =>{
     var faith = notificatiomnanager.findIndex(e => { return e === credential.reciver });
+    var faithOMD = oMDlists.findIndex(e => { return e.shared === credential.reciver });
 
 if(credential.flag === "remove")
 {
     notificatiomnanager.splice(faith,1);
-    console.log('remove notificatiomnanager',notificatiomnanager)
-    return notificatiomnanager;
+    oMDlists[faithOMD].notification=0;
+    console.log('remove notificatiomnanager',notificatiomnanager, oMDlists[faithOMD])
+    return {notificatiomnanager:notificatiomnanager,oMDlists:oMDlists};
 }
 else{
     console.log('faith',faith , typeof(faith))
@@ -152,16 +151,35 @@ else{
         }
 
         notificatiomnanager.push(newNotification);
-        console.log('new notificatiomnanager',notificatiomnanager)
+        console.log("===>",oMDlists)
 
-        return notificatiomnanager;
+        if(oMDlists != undefined)
+        {
+            if(faithOMD != -1)
+            {
+                oMDlists[faithOMD].notification=newNotification.notificationCount;
+            }
+            else
+            {
+console.log("faithOMD",faithOMD)
+            }
+        }
+        else{
+            console.log("Provider-166: undeiuinfed omd")
+        }
+        console.log('new notificatiomnanager',notificatiomnanager, oMDlists[faithOMD])
+        return {notificatiomnanager:notificatiomnanager,oMDlists:oMDlists};
+    
 
     }
     else{
         //already in notificaation
         notificatiomnanager[faith].notificationCount += 1;
-        console.log('add notificatiomnanager',notificatiomnanager)
-        return notificatiomnanager;
+        oMDlists[faithOMD].notification +=1;
+
+        console.log('add notificatiomnanager',notificatiomnanager, oMDlists[faithOMD])
+        return {notificatiomnanager:notificatiomnanager,oMDlists:oMDlists};
+
     }
 }
 

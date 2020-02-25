@@ -270,10 +270,10 @@ _updatedatabase = (data) => {
         var rfaith = _oMDlistsFinder(data.reciver);
 
 
-        let newsID = { branch: MasterDatabase.length - 1, shared: data.reciver }
+        let newsID = { branch: MasterDatabase.length - 1, shared: data.reciver ,notification:0 }
         UCD[sfaith].oMDlists.push(newsID);
 
-        let newrID = { branch: MasterDatabase.length - 1, shared: data.sender }
+        let newrID = { branch: MasterDatabase.length - 1, shared: data.sender,notification:1 }
         UCD[rfaith].oMDlists.push(newrID)
 
       //  globalSocket.emit('updateoMDlist', UCD[sfaith].oMDlists);
@@ -285,7 +285,11 @@ _updatedatabase = (data) => {
         // globalSocket.broadcast.to(data.susid).emit('updateoMDlist', UCD[sfaith].oMDlists);
         // globalSocket.broadcast.to(data.rusid).emit('updateoMDlist', UCD[rfaith].oMDlists);
      //   globalSocket.emit('updateoMDlist', UCD[sfaith].oMDlists);
+
         io.to(data.rusid).emit('updateoMDlist', UCD[rfaith].oMDlists);
+     //   io.to(data.rusid).emit('updateoMDlist', UCD[rfaith].oMDlists);
+      //  io.to(data.rusid).emit('updateoMDlist', UCD[rfaith].oMDlists);
+
         io.to(data.susid).emit('updateoMDlist', UCD[sfaith].oMDlists);
 
         // globalSocket.emit('newMDID', newID);

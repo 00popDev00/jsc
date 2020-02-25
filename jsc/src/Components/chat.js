@@ -42,7 +42,7 @@ class Chat extends Component {
             // this.props.CurrentChats([])
         }
         else {
-            // console.log('idk',this.props.currentchats)
+            // //console.log('idk',this.props.currentchats)
 
             // this.setState({
             //     messageList: this.props.currentchats === undefined? [] :this.props.currentchats ,
@@ -55,10 +55,6 @@ class Chat extends Component {
 
     }
 
-    // componentWillUpdate() {
-
-    // }
-
     componentWillUnmount() {
 
         this.setState({
@@ -70,8 +66,10 @@ class Chat extends Component {
 
     }
 
+   
+
     componentDidMount() {
-        //      console.log('componentDidMount', this.props)
+        //      //console.log('componentDidMount', this.props)
 
         if (this.props.currentreciver !== undefined) {
             // this._getDatabase();
@@ -79,53 +77,84 @@ class Chat extends Component {
 
         }
         else {
-           // console.log("Loading.....no reciver selected yet")
+            // //console.log("Loading.....no reciver selected yet")
         }
 
 
         this.props.socket.on('message', (data) => {
-            console.log("data from send")//, data)
 
-            if(data.reciver === this.props.currentreciver)
-            {
-                var ml = this.props.currentchats;
+            if (this.props.currentreciver === undefined) {//No User is selected, yet on start page
+                //console.log("notification inside homescreen")//, data)
+                this.props.NotificationManager({ flag: 'add', reciver: data.reciver })
 
-                ml.push(data);            
-                this.props.CurrentChats(ml)
-               // console.log('---=>', this.props.socket.id)
-                this.setState({});
             }
-            else{
+            else {
+                // User is selected,  on somone's page
+                if (data.MD_id === this.props.currentMD_id) {
+                    //console.log("notification inside same chat")
+                    var ml = this.props.currentchats;
+                    ml.push(data);
+                    this.props.CurrentChats(ml)
+                    this.setState({});
+                }
+                else {
 
-                console.log("notification",data )//, data)
 
-                //goes to notification manager
-                
+                    if (this.props.currentMD_id === undefined) {
+                        //First time chatter
+
+                        //console.log("Firt time  chat")
+                        var ml = this.props.currentchats;
+                        ml.push(data);
+                        this.props.CurrentChats(ml)
+                        this.setState({});
+                    }
+                    else{
+                        //console.log("",data.MD_id ,"notification inside other chat",this.props.currentMD_id)//, data)
+
+                        //console.log("notification inside other chat")//, data)
+                        this.props.NotificationManager({ flag: 'add', reciver: data.reciver })
+    
+                    }
+                    // if (data.MD_id !== this.props.currentMD_id) {
+                       
+                    // }
+                  
+                    //goes to notification manager
+
+                }
+
+                if (this.props.currentMD_id === undefined) {
+                    // this.props.CurrentMDid(data.MD_id);
+                    if (this.props.currentreciver !== undefined) {
+                        var faith = this.props.oMDlists.findIndex(e => { return e.shared === this.props.currentreciver.owner })
+                        //console.log('recovering current Md_id:', faith);
+                        this.props.CurrentMDid(this.props.oMDlists[faith].branch)
+                    }
+
+                }
+
             }
-            
 
-            if (this.props.currentMD_id === undefined) {
-                // this.props.CurrentMDid(data.MD_id);
-                 if(this.props.currentreciver !== undefined)
-                 {
-                     var faith = this.props.oMDlists.findIndex(e => { return e.shared === this.props.currentreciver.owner })
-                     console.log('faith:',faith);
-                     this.props.CurrentMDid(this.props.oMDlists[faith].branch)
-                 }
-                 
-             }
-            if(this.props.currentMD_id === data.MD_id)
-            {
-                var ml = this.props.currentchats;
-                ml.push(data);
-                this.props.CurrentChats(ml)
-                this.setState({});
-            }
-            else
-            {
-                console.log('data.MD_id',data.MD_id)
-                this.props.NotificationManager({flag:'add',reciver:data.reciver})
-            }                 
+
+
+
+
+            //=================================================
+            //NOTIFICATION WITH MD-ID
+            // if(this.props.currentMD_id === data.MD_id)
+            // {
+            //     var ml = this.props.currentchats;
+            //     ml.push(data);
+            //     this.props.CurrentChats(ml)
+            //     this.setState({});
+            // }
+            // else
+            // {
+            //     //console.log('data.MD_id',data.MD_id)
+            //     this.props.NotificationManager({flag:'add',reciver:data.reciver})
+            // }  
+            //====================================================               
 
 
         })
@@ -182,7 +211,7 @@ class Chat extends Component {
                                 this.props.currentchats.length > 0 ? this.props.currentchats.map((e, index) => (
 
                                     e.owner === this.props.username ?
-                                        <div id="BubblePlateOwner"  key={index} >
+                                        <div id="BubblePlateOwner" key={index} >
 
                                             <div id="ChatBubbleOwner" key={index} >
                                                 <div id="Message"> {e.message}</div>
@@ -192,7 +221,7 @@ class Chat extends Component {
                                         </div>
 
                                         :
-                                        <div id="BubblePlate"  key={index} >
+                                        <div id="BubblePlate" key={index} >
 
                                             <div id="ChatBubble" key={index}>
                                                 <div id="Message"> {e.message}</div>
@@ -235,7 +264,7 @@ const mapDispatchToProps = dispatch => ({
     CurrentMDid: (credential) => dispatch(Action.CurrentMDid(credential)),
     NotificationManager: (credential) => dispatch(Action.NotificationManager(credential)),
 
-    
+
 
     // Onlineusers: (credential) => dispatch(Action.Onlineusers(credential)),
     //CurrentReciver: (credential) => dispatch(Action.CurrentReciver(credential))
